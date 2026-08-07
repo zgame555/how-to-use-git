@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 330" role="img" aria-labelledby="title desc">
+  <title id="title">Git branching and merge</title>
+  <desc id="desc">Main branch flows across the page, feature login branches upward and merges back.</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#f17a52"/></marker></defs>
+  <rect width="900" height="330" fill="#16282e"/>
+  <path d="M0 44H900" stroke="#2d4a4e"/>
+  <text x="28" y="29" fill="#8ba3a0" font-family="monospace" font-size="11" letter-spacing="2">FIG. 02 / BRANCH WITHOUT FEAR</text>
+  <g font-family="Arial, sans-serif">
+    <text x="29" y="119" fill="#83c4ca" font-size="12" font-weight="700" letter-spacing="2">main</text>
+    <text x="29" y="198" fill="#f3bd72" font-size="12" font-weight="700" letter-spacing="2">feature/login</text>
+    <path d="M91 116H836" stroke="#83c4ca" stroke-width="3" marker-end="url(#arrow)"/>
+    <path d="M207 195C295 195 300 116 378 116" fill="none" stroke="#f3bd72" stroke-width="3"/>
+    <path d="M378 116C471 116 490 195 575 195" fill="none" stroke="#f3bd72" stroke-width="3"/>
+    <path d="M575 195C647 195 663 116 728 116" fill="none" stroke="#f3bd72" stroke-width="3" marker-end="url(#arrow)"/>
+    <g fill="#16282e" stroke-width="3">
+      <circle cx="120" cy="116" r="9" stroke="#83c4ca"/><circle cx="207" cy="116" r="9" stroke="#83c4ca"/><circle cx="378" cy="116" r="9" stroke="#83c4ca"/><circle cx="575" cy="116" r="9" stroke="#83c4ca"/><circle cx="728" cy="116" r="9" stroke="#83c4ca"/><circle cx="820" cy="116" r="9" stroke="#83c4ca"/>
+      <circle cx="207" cy="195" r="9" stroke="#f3bd72"/><circle cx="295" cy="195" r="9" stroke="#f3bd72"/><circle cx="575" cy="195" r="9" stroke="#f3bd72"/>
+    </g>
+    <text x="101" y="88" fill="#8ba3a0" font-size="11">start</text>
+    <text x="183" y="231" fill="#f3bd72" font-size="11">switch -c</text>
+    <text x="270" y="174" fill="#f3bd72" font-size="11">ทำงาน + commit</text>
+    <text x="535" y="231" fill="#f3bd72" font-size="11">merge</text>
+    <text x="705" y="88" fill="#8ba3a0" font-size="11">ship</text>
+    <rect x="74" y="262" width="750" height="35" rx="3" fill="#203a3e"/>
+    <text x="95" y="285" fill="#9db3ae" font-family="monospace" font-size="12"><tspan fill="#f17a52">$</tspan> git switch -c feature/login    →    git merge feature/login</text>
+  </g>
+</svg>

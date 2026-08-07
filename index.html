@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="คู่มือ Git ภาษาไทยแบบละเอียด ตั้งแต่เริ่มต้นจนทำงานร่วมกับทีม พร้อมภาพประกอบและ command ที่ใช้จริง" />
+    <title>Git Field Guide — คู่มือ Git ฉบับใช้งานจริง</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">ข้ามไปยังเนื้อหาหลัก</a>
+
+    <header class="site-header">
+      <div class="shell nav-wrap">
+        <a class="brand" href="#top" aria-label="Git Field Guide หน้าหลัก">
+          <span class="brand-mark" aria-hidden="true">⌘</span>
+          <span><strong>GIT</strong><small>FIELD GUIDE</small></span>
+        </a>
+        <nav class="top-nav" aria-label="เมนูหลัก">
+          <a href="#start">เริ่มต้น</a>
+          <a href="#workflow">Workflow</a>
+          <a href="#branching">Branch</a>
+          <a href="#collab">ทำงานเป็นทีม</a>
+          <button class="theme-toggle" type="button" aria-label="สลับโหมดสี" data-theme-toggle>
+            <span aria-hidden="true">◐</span><span class="theme-label">โหมดกลางคืน</span>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <div class="reading-progress" aria-hidden="true"><span data-progress></span></div>
+
+    <main id="main-content">
+      <section class="hero shell" id="top" aria-labelledby="hero-title">
+        <div class="hero-copy reveal">
+          <p class="eyebrow"><span class="eyebrow-dot"></span> FIELD NOTE / 001 · อัปเดตสำหรับผู้เริ่มต้น</p>
+          <h1 id="hero-title">ควบคุม<br /><em>ประวัติของโค้ด</em><br />ด้วย Git</h1>
+          <p class="hero-lede">คู่มือภาคสนามสำหรับคนที่อยากใช้ Git ได้จริง ตั้งแต่ commit แรก ไปจนถึงการทำงานร่วมกับทีมโดยไม่ทำโค้ดหาย</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#start">เริ่มจากศูนย์ <span aria-hidden="true">↘</span></a>
+            <a class="button button-quiet" href="#cheatsheet">ดู cheat sheet <span aria-hidden="true">⌘K</span></a>
+          </div>
+          <div class="hero-meta">
+            <span><strong>อ่านจบใน</strong> 25 นาที</span>
+            <span class="meta-rule" aria-hidden="true"></span>
+            <span><strong>ระดับ</strong> Beginner → Intermediate</span>
+          </div>
+        </div>
+
+        <div class="hero-terminal reveal delay-1" aria-label="ตัวอย่างการใช้ Git ใน terminal">
+          <div class="terminal-top">
+            <span class="terminal-lights"><i></i><i></i><i></i></span>
+            <span class="terminal-title">~/projects/recipe-app</span>
+            <span class="terminal-dots">•••</span>
+          </div>
+          <div class="terminal-body">
+            <p><span class="prompt">$</span> git status</p>
+            <p class="terminal-muted">On branch <span class="cyan">main</span></p>
+            <p class="terminal-muted">Changes not staged for commit:</p>
+            <p class="terminal-red">  modified:   src/recipe.js</p>
+            <p class="terminal-spacer">&nbsp;</p>
+            <p><span class="prompt">$</span> git add src/recipe.js</p>
+            <p><span class="prompt">$</span> git commit -m <span class="yellow">"add curry recipe"</span></p>
+            <p class="terminal-green">[main 4e8c2a1] add curry recipe</p>
+            <p class="terminal-muted"> 1 file changed, 12 insertions(+)</p>
+            <p class="terminal-spacer">&nbsp;</p>
+            <p><span class="prompt">$</span> git log --oneline -3<span class="cursor" aria-hidden="true">▋</span></p>
+          </div>
+          <div class="terminal-sticker">safe<br /><strong>to ship</strong></div>
+        </div>
+      </section>
+
+      <section class="intro-band" aria-label="ภาพรวมของ Git">
+        <div class="shell intro-grid">
+          <div class="intro-label">THE BIG IDEA <span>↓</span></div>
+          <p>Git คือ <strong>สมุดบันทึกการเปลี่ยนแปลง</strong> ของโปรเจกต์ ทุก commit คือจุดพักที่ย้อนกลับไปดูได้ว่า “ใครแก้อะไร เมื่อไหร่ และทำไม”</p>
+          <div class="intro-number">01<span>/08</span></div>
+        </div>
+      </section>
+
+      <div class="shell page-layout">
+        <aside class="side-rail" aria-label="สารบัญคู่มือ">
+          <div class="rail-sticky">
+            <p class="rail-kicker">ON THIS PAGE</p>
+            <nav class="toc">
+              <a class="active" href="#start"><span>01</span> ทำความรู้จัก Git</a>
+              <a href="#install"><span>02</span> ติดตั้งและตั้งค่า</a>
+              <a href="#workflow"><span>03</span> วงจรชีวิตไฟล์</a>
+              <a href="#first-repo"><span>04</span> สร้าง repo แรก</a>
+              <a href="#branching"><span>05</span> Branch & merge</a>
+              <a href="#collab"><span>06</span> ทำงานกับ remote</a>
+              <a href="#recovery"><span>07</span> แก้พลาดอย่างปลอดภัย</a>
+              <a href="#cheatsheet"><span>08</span> Cheat sheet</a>
+            </nav>
+            <div class="rail-note">
+              <span class="rail-note-icon" aria-hidden="true">✦</span>
+              <p><strong>จำง่าย ๆ</strong><br />อย่า commit สิ่งที่ยังอธิบายไม่ได้</p>
+            </div>
+          </div>
+        </aside>
+
+        <article class="guide-content">
+          <section class="guide-section" id="start" aria-labelledby="start-title">
+            <div class="section-marker"><span>01</span><i></i></div>
+            <p class="section-kicker">THE MENTAL MODEL</p>
+            <h2 id="start-title">Git คืออะไร<br /><span>และต่างจาก GitHub อย่างไร?</span></h2>
+            <p class="lead">เริ่มจากแยก 2 คำนี้ให้ชัด: <strong>Git</strong> คือเครื่องมือบนเครื่องของเรา ส่วน <strong>GitHub</strong> คือบริการบนอินเทอร์เน็ตที่ช่วยเก็บ repo และทำงานร่วมกับคนอื่น</p>
+
+            <div class="definition-grid">
+              <div class="definition-card git-card">
+                <span class="card-index">A / LOCAL</span>
+                <div class="definition-symbol" aria-hidden="true">git<br /><span>⟲</span></div>
+                <h3>Git</h3>
+                <p>ระบบควบคุมเวอร์ชันแบบกระจาย (distributed version control) ทำงานได้แม้ไม่มีอินเทอร์เน็ต</p>
+                <code>git commit</code>
+              </div>
+              <div class="definition-card github-card">
+                <span class="card-index">B / CLOUD</span>
+                <div class="definition-symbol github-symbol" aria-hidden="true">◉</div>
+                <h3>GitHub</h3>
+                <p>แพลตฟอร์มออนไลน์สำหรับเก็บ Git repository, review code และทำงานร่วมกัน</p>
+                <code>github.com</code>
+              </div>
+            </div>
+
+            <aside class="callout callout-orange">
+              <span class="callout-icon" aria-hidden="true">!</span>
+              <p><strong>ความเข้าใจผิดที่พบบ่อย</strong><br />Git ไม่ใช่ GitHub และเราใช้ Git ได้โดยไม่ต้องสมัคร GitHub แต่ถ้าจะ backup หรือทำงานกับทีม เรามักเชื่อม Git เข้ากับ GitHub</p>
+            </aside>
+          </section>
+
+          <section class="guide-section" id="install" aria-labelledby="install-title">
+            <div class="section-marker"><span>02</span><i></i></div>
+            <p class="section-kicker">SETUP ONCE</p>
+            <h2 id="install-title">ติดตั้งครั้งเดียว<br /><span>ตั้งค่าให้พร้อมใช้งาน</span></h2>
+            <p>ดาวน์โหลด Git จาก <a class="text-link" href="https://git-scm.com/downloads" target="_blank" rel="noreferrer">git-scm.com/downloads ↗</a> แล้วเปิด Terminal (macOS/Linux) หรือ Git Bash / PowerShell (Windows)</p>
+
+            <div class="step-list">
+              <div class="step-item">
+                <span class="step-no">01</span>
+                <div><h3>เช็กว่าติดตั้งแล้วหรือยัง</h3><p>คำสั่งนี้ควรแสดงหมายเลขเวอร์ชัน เช่น <code>git version 2.45.0</code></p></div>
+                <div class="code-block compact"><button class="copy-button" type="button" data-copy="git --version" aria-label="คัดลอกคำสั่ง git --version">copy</button><code><span class="prompt">$</span> git --version</code></div>
+              </div>
+              <div class="step-item">
+                <span class="step-no">02</span>
+                <div><h3>บอกชื่อที่จะแสดงในประวัติ</h3><p>ใช้ชื่อจริง ชื่อเล่น หรือชื่อทีมก็ได้ ชื่อนี้จะติดไปกับทุก commit</p></div>
+                <div class="code-block compact"><button class="copy-button" type="button" data-copy='git config --global user.name "Your Name"' aria-label="คัดลอกคำสั่งตั้งชื่อ Git">copy</button><code><span class="prompt">$</span> git config --global user.name <span class="string">"Your Name"</span></code></div>
+              </div>
+              <div class="step-item">
+                <span class="step-no">03</span>
+                <div><h3>ตั้งอีเมลให้ตรงกับบัญชี GitHub</h3><p>ถ้าอีเมลตรง ระบบจะเชื่อม commit เข้ากับโปรไฟล์ได้ถูกต้อง</p></div>
+                <div class="code-block compact"><button class="copy-button" type="button" data-copy='git config --global user.email "you@example.com"' aria-label="คัดลอกคำสั่งตั้งอีเมล Git">copy</button><code><span class="prompt">$</span> git config --global user.email <span class="string">"you@example.com"</span></code></div>
+              </div>
+              <div class="step-item">
+                <span class="step-no">04</span>
+                <div><h3>ตรวจสอบค่าที่ตั้งไว้</h3><p>ดูค่าทั้งหมดที่ Git กำลังใช้ในเครื่องนี้</p></div>
+                <div class="code-block compact"><button class="copy-button" type="button" data-copy="git config --global --list" aria-label="คัดลอกคำสั่งตรวจสอบ Git config">copy</button><code><span class="prompt">$</span> git config --global --list</code></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="guide-section" id="workflow" aria-labelledby="workflow-title">
+            <div class="section-marker"><span>03</span><i></i></div>
+            <p class="section-kicker">THE DAILY LOOP</p>
+            <h2 id="workflow-title">วงจรชีวิตไฟล์<br /><span>จากการแก้ ไปสู่ประวัติ</span></h2>
+            <p class="lead">Git มีพื้นที่สำคัญ 3 จุด การเข้าใจเส้นทางนี้จะทำให้คำสั่งอย่าง <code>add</code>, <code>commit</code> และ <code>restore</code> ไม่ใช่เรื่องท่องจำ</p>
+
+            <figure class="diagram-card">
+              <img src="assets/git-workflow.svg" alt="แผนภาพแสดงเส้นทาง Working tree ไป Staging area ไป Local repository และ Remote repository" />
+              <figcaption><span>FIG. 01</span> ไฟล์จะยังไม่เข้า commit จนกว่าเราจะสั่ง <code>git add</code> แล้วตามด้วย <code>git commit</code></figcaption>
+            </figure>
+
+            <div class="concept-table" role="list" aria-label="สามพื้นที่หลักของ Git">
+              <div class="concept-row" role="listitem"><span class="concept-number orange">01</span><div><strong>Working tree</strong><p>ไฟล์ที่เราเปิด แก้ไข และเห็นอยู่ในโฟลเดอร์โปรเจกต์</p></div><code>แก้ไฟล์</code></div>
+              <div class="concept-row" role="listitem"><span class="concept-number blue">02</span><div><strong>Staging area</strong><p>พื้นที่คัดเลือกว่าการเปลี่ยนแปลงใดจะรวมใน commit ถัดไป</p></div><code>git add</code></div>
+              <div class="concept-row" role="listitem"><span class="concept-number green">03</span><div><strong>Local repository</strong><p>ประวัติ commit ที่เก็บอยู่ในเครื่องเรา ย้อนดูได้แม้ offline</p></div><code>git commit</code></div>
+            </div>
+
+            <h3 class="subheading">ชุดคำสั่งประจำวัน</h3>
+            <div class="command-pair">
+              <div class="code-block"><div class="code-heading"><span>ดูสถานะก่อนเสมอ</span><button class="copy-button" type="button" data-copy="git status">copy</button></div><code><span class="prompt">$</span> git status</code><p class="code-note">บอกว่าอยู่ branch ไหน ไฟล์ใดถูกแก้ และมีอะไรอยู่ใน staging</p></div>
+              <div class="code-block"><div class="code-heading"><span>ดูความต่างก่อน add</span><button class="copy-button" type="button" data-copy="git diff">copy</button></div><code><span class="prompt">$</span> git diff</code><p class="code-note">ดูบรรทัดที่เปลี่ยนในไฟล์ที่ยังไม่ stage</p></div>
+              <div class="code-block"><div class="code-heading"><span>เลือกไฟล์เข้า staging</span><button class="copy-button" type="button" data-copy="git add src/app.js">copy</button></div><code><span class="prompt">$</span> git add src/app.js</code><p class="code-note">เลือกเป็นไฟล์จะปลอดภัยกว่า <code>git add .</code> ในงานใหญ่</p></div>
+              <div class="code-block"><div class="code-heading"><span>บันทึกเป็น commit</span><button class="copy-button" type="button" data-copy='git commit -m "describe the change"'>copy</button></div><code><span class="prompt">$</span> git commit -m <span class="string">"describe the change"</span></code><p class="code-note">เขียน message ให้ตอบได้ว่า commit นี้ทำอะไร</p></div>
+            </div>
+
+            <aside class="callout callout-mint">
+              <span class="callout-icon" aria-hidden="true">✓</span>
+              <p><strong>หลักทองของ commit</strong><br />หนึ่ง commit ควรมีหนึ่งเหตุผล เช่น “เพิ่ม validation ฟอร์มสมัครสมาชิก” ดีกว่า “แก้หลายอย่าง” เพราะเวลา debug หรือย้อนกลับจะเข้าใจง่าย</p>
+            </aside>
+          </section>
+
+          <section class="guide-section" id="first-repo" aria-labelledby="first-repo-title">
+            <div class="section-marker"><span>04</span><i></i></div>
+            <p class="section-kicker">FIRST REPOSITORY</p>
+            <h2 id="first-repo-title">สร้าง repo แรก<br /><span>แบบทำตามได้ทีละบรรทัด</span></h2>
+            <p>สมมติว่ามีโฟลเดอร์โปรเจกต์ชื่อ <code>recipe-app</code> อยู่แล้ว ขั้นตอนนี้จะเปลี่ยนโฟลเดอร์ธรรมดาให้กลายเป็น Git repository</p>
+
+            <div class="recipe-card">
+              <div class="recipe-header"><span class="recipe-label">MISSION / 01</span><span class="recipe-time">ประมาณ 2 นาที</span></div>
+              <ol class="terminal-steps">
+                <li><span class="terminal-step-no">01</span><div><p>เข้าไปยังโฟลเดอร์โปรเจกต์</p><div class="inline-command"><code>cd recipe-app</code><button class="copy-button" type="button" data-copy="cd recipe-app" aria-label="คัดลอกคำสั่ง cd recipe-app">copy</button></div></div></li>
+                <li><span class="terminal-step-no">02</span><div><p>เริ่มต้น Git ในโฟลเดอร์นี้</p><div class="inline-command"><code>git init</code><button class="copy-button" type="button" data-copy="git init" aria-label="คัดลอกคำสั่ง git init">copy</button></div><small>Git จะสร้างโฟลเดอร์ซ่อนชื่อ <code>.git</code> เพื่อเก็บประวัติ</small></div></li>
+                <li><span class="terminal-step-no">03</span><div><p>ตรวจสอบไฟล์ที่ Git มองเห็น</p><div class="inline-command"><code>git status</code><button class="copy-button" type="button" data-copy="git status" aria-label="คัดลอกคำสั่ง git status">copy</button></div></div></li>
+                <li><span class="terminal-step-no">04</span><div><p>เพิ่มไฟล์ทั้งหมดเข้า staging</p><div class="inline-command"><code>git add .</code><button class="copy-button" type="button" data-copy="git add ." aria-label="คัดลอกคำสั่ง git add จุด">copy</button></div></div></li>
+                <li><span class="terminal-step-no">05</span><div><p>สร้าง commit แรก</p><div class="inline-command"><code>git commit -m <span class="string">"initial commit"</span></code><button class="copy-button" type="button" data-copy='git commit -m "initial commit"' aria-label="คัดลอกคำสั่ง initial commit">copy</button></div></div></li>
+              </ol>
+            </div>
+
+            <div class="two-column-note">
+              <div><span class="mini-label">ตั้งชื่อ branch หลัก</span><p>หลายโปรเจกต์ใช้ชื่อ <code>main</code> เป็นมาตรฐาน ถ้า Git รุ่นเก่ายังใช้ <code>master</code> เปลี่ยนได้ด้วยคำสั่งนี้</p><div class="code-block"><code><span class="prompt">$</span> git branch -M main</code></div></div>
+              <div><span class="mini-label">สร้าง .gitignore</span><p>กันไฟล์ที่ไม่ควร commit เช่น secret, dependency และไฟล์ build</p><div class="code-block"><code><span class="prompt">$</span> touch .gitignore</code></div></div>
+            </div>
+            <div class="ignore-example"><strong>ตัวอย่าง .gitignore</strong><code>node_modules/<br />.env<br />dist/<br />.DS_Store</code></div>
+          </section>
+
+          <section class="guide-section" id="branching" aria-labelledby="branching-title">
+            <div class="section-marker"><span>05</span><i></i></div>
+            <p class="section-kicker">SAFE EXPERIMENTS</p>
+            <h2 id="branching-title">Branch & merge<br /><span>แยกงานโดยไม่รบกวน main</span></h2>
+            <p class="lead">Branch คือเส้นทางประวัติแยกออกมา ให้เราทดลองฟีเจอร์หรือแก้บั๊กโดยไม่ทำให้ branch หลักเสียหาย</p>
+
+            <figure class="diagram-card dark-diagram">
+              <img src="assets/git-branching.svg" alt="แผนภาพ branch main แยกเป็น feature login แล้ว merge กลับเข้าหา main" />
+              <figcaption><span>FIG. 02</span> แตก branch จากจุดที่พร้อม แล้วรวมกลับเมื่อฟีเจอร์ผ่านการตรวจสอบ</figcaption>
+            </figure>
+
+            <div class="branch-flow">
+              <div class="flow-card"><span>01</span><h3>สร้างและสลับ branch</h3><p>คำสั่งสมัยใหม่ที่ทำทั้งสองอย่างในครั้งเดียว</p><div class="code-block"><code><span class="prompt">$</span> git switch -c feature/login</code><button class="copy-button" type="button" data-copy="git switch -c feature/login" aria-label="คัดลอกคำสั่งสร้าง feature login">copy</button></div></div>
+              <div class="flow-card"><span>02</span><h3>ทำงานและ commit</h3><p>แก้โค้ด ทดสอบ แล้วบันทึกเป็นก้อนเล็ก ๆ</p><div class="code-block"><code><span class="prompt">$</span> git add .<br /><span class="prompt">$</span> git commit -m <span class="string">"add login form"</span></code><button class="copy-button" type="button" data-copy='git add . && git commit -m "add login form"' aria-label="คัดลอกคำสั่ง commit login form">copy</button></div></div>
+              <div class="flow-card"><span>03</span><h3>กลับ main</h3><p>ก่อน merge ให้ดึงประวัติล่าสุดของ main มาก่อนเสมอ</p><div class="code-block"><code><span class="prompt">$</span> git switch main<br /><span class="prompt">$</span> git pull</code><button class="copy-button" type="button" data-copy="git switch main\ngit pull" aria-label="คัดลอกคำสั่งกลับ main และ pull">copy</button></div></div>
+              <div class="flow-card"><span>04</span><h3>รวม branch</h3><p>นำฟีเจอร์ที่เสร็จแล้วมารวมใน main</p><div class="code-block"><code><span class="prompt">$</span> git merge feature/login</code><button class="copy-button" type="button" data-copy="git merge feature/login" aria-label="คัดลอกคำสั่ง merge feature login">copy</button></div></div>
+            </div>
+            <aside class="callout callout-blue"><span class="callout-icon" aria-hidden="true">↗</span><p><strong>ชื่อ branch ที่ดี</strong><br /><code>feature/payment</code>, <code>fix/navbar-overflow</code>, <code>docs/git-guide</code> — อ่านแล้วรู้ทั้งประเภทและเรื่องที่กำลังทำ</p></aside>
+          </section>
+
+          <section class="guide-section" id="collab" aria-labelledby="collab-title">
+            <div class="section-marker"><span>06</span><i></i></div>
+            <p class="section-kicker">REMOTE & COLLABORATION</p>
+            <h2 id="collab-title">ทำงานกับ remote<br /><span>ให้ทีมเห็นโค้ดชุดเดียวกัน</span></h2>
+            <p>Remote คือ repository ที่อยู่บนเซิร์ฟเวอร์ เช่น GitHub, GitLab หรือ Bitbucket คำสั่งหลักมี 3 กลุ่ม: ส่งขึ้น, ดึงลง และดูความเปลี่ยนแปลง</p>
+
+            <div class="remote-map">
+              <div class="remote-node local-node"><span class="node-icon" aria-hidden="true">⌂</span><strong>เครื่องเรา</strong><small>local repo</small></div>
+              <div class="remote-arrow"><span>git push</span><i>→</i><span>git pull</span></div>
+              <div class="remote-node cloud-node"><span class="node-icon" aria-hidden="true">◉</span><strong>GitHub</strong><small>remote repo</small></div>
+            </div>
+
+            <div class="remote-commands">
+              <div class="remote-command"><code>git remote add origin URL</code><p>เชื่อม repo ในเครื่องกับ GitHub ครั้งแรก</p></div>
+              <div class="remote-command"><code>git push -u origin main</code><p>ส่ง branch main ขึ้น remote และจำคู่ branch ไว้</p></div>
+              <div class="remote-command"><code>git fetch origin</code><p>ดึงข้อมูลใหม่มาดู แต่ยังไม่รวมเข้าการทำงาน</p></div>
+              <div class="remote-command"><code>git pull origin main</code><p>ดึงข้อมูลใหม่และรวมเข้ากับ branch ปัจจุบัน</p></div>
+            </div>
+
+            <h3 class="subheading">Pull Request แบบสั้นที่สุด</h3>
+            <ol class="pr-list">
+              <li><span>01</span><div><strong>สร้าง branch</strong><p>อย่าทำฟีเจอร์บน <code>main</code> โดยตรง</p></div></li>
+              <li><span>02</span><div><strong>push branch ขึ้น GitHub</strong><p><code>git push -u origin feature/login</code></p></div></li>
+              <li><span>03</span><div><strong>เปิด Pull Request</strong><p>อธิบายสิ่งที่เปลี่ยน วิธีทดสอบ และแนบ screenshot ถ้ามี</p></div></li>
+              <li><span>04</span><div><strong>review → แก้ → merge</strong><p>เมื่อผ่านแล้วค่อยรวมเข้า <code>main</code></p></div></li>
+            </ol>
+          </section>
+
+          <section class="guide-section" id="recovery" aria-labelledby="recovery-title">
+            <div class="section-marker"><span>07</span><i></i></div>
+            <p class="section-kicker">RECOVERY KIT</p>
+            <h2 id="recovery-title">แก้พลาดอย่างปลอดภัย<br /><span>เลือกเครื่องมือให้ตรงอาการ</span></h2>
+            <p>ก่อนใช้คำสั่งย้อนกลับ ให้ถามตัวเอง 2 ข้อ: <strong>commit นี้ถูก push ไปแล้วหรือยัง?</strong> และ <strong>อยากเก็บการแก้ไขไว้ไหม?</strong></p>
+
+            <div class="recovery-table">
+              <div class="recovery-head"><span>สถานการณ์</span><span>ใช้คำสั่ง</span><span>ผลลัพธ์</span></div>
+              <div class="recovery-row"><div>แก้ไฟล์แล้วอยากทิ้งการแก้</div><code>git restore file.js</code><p>คืนไฟล์กลับไปตาม commit ล่าสุด</p></div>
+              <div class="recovery-row"><div>เผลอ add ไฟล์เข้า staging</div><code>git restore --staged file.js</code><p>เอาออกจาก staging แต่ไม่ลบการแก้ในไฟล์</p></div>
+              <div class="recovery-row"><div>อยากแก้ message ของ commit ล่าสุด</div><code>git commit --amend</code><p>แก้ commit ล่าสุด — ใช้ก่อน push เท่านั้น</p></div>
+              <div class="recovery-row"><div>commit ไปแล้ว แต่ต้องการแก้แบบปลอดภัย</div><code>git revert &lt;commit&gt;</code><p>สร้าง commit ใหม่เพื่อหักล้างของเดิม</p></div>
+              <div class="recovery-row warning-row"><div>ต้องย้อน local commit หลายอัน</div><code>git reset --soft HEAD~1</code><p>ย้ายหัว commit แต่เก็บไฟล์และ staging ไว้</p></div>
+            </div>
+
+            <aside class="callout callout-red"><span class="callout-icon" aria-hidden="true">⚠</span><p><strong>ระวัง <code>git reset --hard</code></strong><br />คำสั่งนี้ทิ้งการเปลี่ยนแปลงที่ยังไม่ commit และกู้คืนยากมาก ใช้เฉพาะเมื่อแน่ใจว่าข้อมูลนั้นไม่ต้องการแล้ว</p></aside>
+
+            <h3 class="subheading">แก้ merge conflict เป็นขั้นตอน</h3>
+            <div class="conflict-steps">
+              <div><span>01</span><p>เปิดไฟล์ที่ Git แจ้ง conflict แล้วหาเครื่องหมาย <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code></p></div>
+              <div><span>02</span><p>เลือกหรือเขียนโค้ดเวอร์ชันที่ถูกต้อง แล้วลบเครื่องหมาย conflict ทั้งหมด</p></div>
+              <div><span>03</span><p>รันทดสอบ จากนั้น <code>git add file.js</code> และ commit</p></div>
+              <div><span>04</span><p>ถ้าอยากยกเลิกการ merge ใช้ <code>git merge --abort</code></p></div>
+            </div>
+          </section>
+
+          <section class="guide-section" id="cheatsheet" aria-labelledby="cheatsheet-title">
+            <div class="section-marker"><span>08</span><i></i></div>
+            <p class="section-kicker">KEEP THIS NEARBY</p>
+            <h2 id="cheatsheet-title">Cheat sheet<br /><span>คำสั่งที่ใช้บ่อยในหน้าเดียว</span></h2>
+            <p>ไม่จำเป็นต้องจำทั้งหมด เริ่มจาก 8 คำสั่งที่อยู่ในวงจรประจำวัน แล้วค่อยเติมคำสั่งอื่นตามสถานการณ์</p>
+
+            <div class="cheat-grid">
+              <div class="cheat-item"><code>git init</code><span>เริ่ม repo ใหม่</span></div>
+              <div class="cheat-item"><code>git clone URL</code><span>คัดลอก repo จาก remote</span></div>
+              <div class="cheat-item"><code>git status</code><span>ดูสถานะไฟล์</span></div>
+              <div class="cheat-item"><code>git diff</code><span>ดูความต่าง</span></div>
+              <div class="cheat-item"><code>git add file</code><span>เลือกไฟล์เข้า staging</span></div>
+              <div class="cheat-item"><code>git commit -m "..."</code><span>บันทึกประวัติ</span></div>
+              <div class="cheat-item"><code>git log --oneline</code><span>ดูประวัติแบบสั้น</span></div>
+              <div class="cheat-item"><code>git switch -c name</code><span>สร้าง branch ใหม่</span></div>
+              <div class="cheat-item"><code>git switch main</code><span>สลับ branch</span></div>
+              <div class="cheat-item"><code>git merge name</code><span>รวม branch</span></div>
+              <div class="cheat-item"><code>git pull</code><span>ดึงและรวมจาก remote</span></div>
+              <div class="cheat-item"><code>git push</code><span>ส่งขึ้น remote</span></div>
+            </div>
+
+            <div class="log-example">
+              <div class="log-heading"><span>ประวัติที่อ่านง่าย</span><code>git log --oneline --graph --decorate</code></div>
+              <pre><span class="log-branch">* </span><span class="log-hash">4e8c2a1</span> <span class="log-main">(HEAD -&gt; main)</span> add curry recipe
+<span class="log-branch">* </span><span class="log-hash">a11ce09</span> improve recipe card layout
+<span class="log-branch">|\</span>
+<span class="log-branch">| * </span><span class="log-hash">b7d4f20</span> (feature/login) add login form
+<span class="log-branch">|/</span>
+<span class="log-branch">* </span><span class="log-hash">10f2c8b</span> initial commit</pre>
+            </div>
+
+            <div class="next-step">
+              <div><span class="mini-label">YOUR NEXT MOVE</span><h3>เรียนรู้ด้วยการทำโปรเจกต์เล็ก</h3><p>สร้างโฟลเดอร์ทดลอง แก้ไฟล์วันละหนึ่งอย่าง แล้ว commit ให้สม่ำเสมอ ความชำนาญของ Git มาจากการอ่านประวัติของตัวเอง</p></div>
+              <a class="button button-primary" href="#first-repo">เริ่มภารกิจแรก ↗</a>
+            </div>
+          </section>
+        </article>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="shell footer-grid">
+        <div><a class="brand footer-brand" href="#top"><span class="brand-mark" aria-hidden="true">⌘</span><span><strong>GIT</strong><small>FIELD GUIDE</small></span></a><p>คู่มือภาษาไทยสำหรับคนที่อยากคุมประวัติของโค้ดได้ด้วยตัวเอง</p></div>
+        <div class="footer-col"><span>เอกสารอ้างอิง</span><a href="https://git-scm.com/docs" target="_blank" rel="noreferrer">Git Documentation ↗</a><a href="https://docs.github.com/en/get-started" target="_blank" rel="noreferrer">GitHub Docs ↗</a></div>
+        <div class="footer-col"><span>กลับไปอ่าน</span><a href="#start">เริ่มต้นใหม่ ↑</a><a href="#cheatsheet">Cheat sheet ↑</a></div>
+      </div>
+      <div class="shell footer-bottom"><span>MADE FOR BETTER COMMITS</span><span>git field guide / 2026</span></div>
+    </footer>
+
+    <div class="toast" role="status" aria-live="polite" data-toast>คัดลอกแล้ว</div>
+    <script src="script.js"></script>
+  </body>
+</html>
