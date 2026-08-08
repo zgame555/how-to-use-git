@@ -16,7 +16,12 @@
       if (section.getBoundingClientRect().top <= 150) return section.id;
       return active;
     }, sections[0]?.id);
-    tocLinks.forEach((link) => link.classList.toggle('active', link.getAttribute('href') === `#${current}`));
+    tocLinks.forEach((link) => {
+      const isActive = link.getAttribute('href') === `#${current}`;
+      link.classList.toggle('active', isActive);
+      if (isActive) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    });
   };
 
   window.addEventListener('scroll', () => {
@@ -55,9 +60,11 @@
 
   const savedTheme = localStorage.getItem('git-guide-theme');
   if (savedTheme === 'night') document.body.classList.add('night');
+  document.documentElement.style.colorScheme = savedTheme === 'night' ? 'dark' : 'light';
   themeToggle?.addEventListener('click', () => {
     const isNight = document.body.classList.toggle('night');
     localStorage.setItem('git-guide-theme', isNight ? 'night' : 'day');
+    document.documentElement.style.colorScheme = isNight ? 'dark' : 'light';
     themeToggle.querySelector('.theme-label').textContent = isNight ? 'โหมดกลางวัน' : 'โหมดกลางคืน';
   });
   if (document.body.classList.contains('night') && themeToggle) themeToggle.querySelector('.theme-label').textContent = 'โหมดกลางวัน';

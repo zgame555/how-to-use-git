@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
     <meta name="description" content="คู่มือ Git ภาษาไทยแบบละเอียด ตั้งแต่เริ่มต้นจนทำงานร่วมกับทีม พร้อมภาพประกอบและ command ที่ใช้จริง" />
     <title>Git Field Guide — คู่มือ Git ฉบับใช้งานจริง</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -24,6 +25,7 @@
           <a href="#workflow">Workflow</a>
           <a href="#branching">Branch</a>
           <a href="#collab">ทำงานเป็นทีม</a>
+          <a href="#multi-agent">หลาย Agent</a>
           <button class="theme-toggle" type="button" aria-label="สลับโหมดสี" data-theme-toggle>
             <span aria-hidden="true">◐</span><span class="theme-label">โหมดกลางคืน</span>
           </button>
@@ -38,15 +40,15 @@
         <div class="hero-copy reveal">
           <p class="eyebrow"><span class="eyebrow-dot"></span> FIELD NOTE / 001 · อัปเดตสำหรับผู้เริ่มต้น</p>
           <h1 id="hero-title">ควบคุม<br /><em>ประวัติของโค้ด</em><br />ด้วย Git</h1>
-          <p class="hero-lede">คู่มือภาคสนามสำหรับคนที่อยากใช้ Git ได้จริง ตั้งแต่ commit แรก ไปจนถึงการทำงานร่วมกับทีมโดยไม่ทำโค้ดหาย</p>
+          <p class="hero-lede">คู่มือภาคสนามสำหรับคนที่อยากใช้ Git ได้จริง ตั้งแต่ commit แรก ไปจนถึงการทำงานร่วมกับทีมและหลาย coding agent โดยไม่ทำโค้ดหาย</p>
           <div class="hero-actions">
             <a class="button button-primary" href="#start">เริ่มจากศูนย์ <span aria-hidden="true">↘</span></a>
             <a class="button button-quiet" href="#cheatsheet">ดู cheat sheet <span aria-hidden="true">⌘K</span></a>
           </div>
           <div class="hero-meta">
-            <span><strong>อ่านจบใน</strong> 25 นาที</span>
+            <span><strong>อ่านจบใน</strong> 35 นาที</span>
             <span class="meta-rule" aria-hidden="true"></span>
-            <span><strong>ระดับ</strong> Beginner → Intermediate</span>
+            <span><strong>ระดับ</strong> Beginner → Team workflow</span>
           </div>
         </div>
 
@@ -77,7 +79,7 @@
         <div class="shell intro-grid">
           <div class="intro-label">THE BIG IDEA <span>↓</span></div>
           <p>Git คือ <strong>สมุดบันทึกการเปลี่ยนแปลง</strong> ของโปรเจกต์ ทุก commit คือจุดพักที่ย้อนกลับไปดูได้ว่า “ใครแก้อะไร เมื่อไหร่ และทำไม”</p>
-          <div class="intro-number">01<span>/08</span></div>
+          <div class="intro-number">01<span>/09</span></div>
         </div>
       </section>
 
@@ -93,7 +95,8 @@
               <a href="#branching"><span>05</span> Branch & merge</a>
               <a href="#collab"><span>06</span> ทำงานกับ remote</a>
               <a href="#recovery"><span>07</span> แก้พลาดอย่างปลอดภัย</a>
-              <a href="#cheatsheet"><span>08</span> Cheat sheet</a>
+              <a href="#multi-agent"><span>08</span> หลาย Agent ใน repo</a>
+              <a href="#cheatsheet"><span>09</span> Cheat sheet</a>
             </nav>
             <div class="rail-note">
               <span class="rail-note-icon" aria-hidden="true">✦</span>
@@ -169,7 +172,7 @@
             <p class="lead">Git มีพื้นที่สำคัญ 3 จุด การเข้าใจเส้นทางนี้จะทำให้คำสั่งอย่าง <code>add</code>, <code>commit</code> และ <code>restore</code> ไม่ใช่เรื่องท่องจำ</p>
 
             <figure class="diagram-card">
-              <img src="assets/git-workflow.svg" alt="แผนภาพแสดงเส้นทาง Working tree ไป Staging area ไป Local repository และ Remote repository" />
+              <img src="assets/git-workflow.svg" alt="แผนภาพแสดงเส้นทาง Working tree ไป Staging area ไป Local repository และ Remote repository" width="900" height="300" loading="lazy" />
               <figcaption><span>FIG. 01</span> ไฟล์จะยังไม่เข้า commit จนกว่าเราจะสั่ง <code>git add</code> แล้วตามด้วย <code>git commit</code></figcaption>
             </figure>
 
@@ -224,7 +227,7 @@
             <p class="lead">Branch คือเส้นทางประวัติแยกออกมา ให้เราทดลองฟีเจอร์หรือแก้บั๊กโดยไม่ทำให้ branch หลักเสียหาย</p>
 
             <figure class="diagram-card dark-diagram">
-              <img src="assets/git-branching.svg" alt="แผนภาพ branch main แยกเป็น feature login แล้ว merge กลับเข้าหา main" />
+              <img src="assets/git-branching.svg" alt="แผนภาพ branch main แยกเป็น feature login แล้ว merge กลับเข้าหา main" width="900" height="330" loading="lazy" />
               <figcaption><span>FIG. 02</span> แตก branch จากจุดที่พร้อม แล้วรวมกลับเมื่อฟีเจอร์ผ่านการตรวจสอบ</figcaption>
             </figure>
 
@@ -291,8 +294,88 @@
             </div>
           </section>
 
-          <section class="guide-section" id="cheatsheet" aria-labelledby="cheatsheet-title">
+          <section class="guide-section" id="multi-agent" aria-labelledby="multi-agent-title">
             <div class="section-marker"><span>08</span><i></i></div>
+            <p class="section-kicker">ONE REPO, MANY AGENTS</p>
+            <h2 id="multi-agent-title">หลาย Agent ใน 1 repo<br /><span>ทำงานพร้อมกันโดยไม่เหยียบกัน</span></h2>
+            <p class="lead">หัวใจสำคัญคือ <strong>อย่าให้หลาย Agent ใช้ working tree และ staging area ชุดเดียวกัน</strong> ให้แต่ละ Agent มี directory, branch และขอบเขตไฟล์ของตัวเอง แล้วค่อยรวมงานผ่าน Agent กลางหรือ Pull Request</p>
+
+            <aside class="callout callout-red agent-warning">
+              <span class="callout-icon" aria-hidden="true">×</span>
+              <p><strong>รูปแบบที่ควรหลีกเลี่ยง</strong><br />เปิด Agent A, B และ C ในโฟลเดอร์เดียวกัน เพราะทุกตัวจะแก้ไฟล์และ Git index ชุดเดียวกัน อาจเกิดไฟล์หาย, stage งานของกันและกัน หรือ commit งานผิดชุดได้</p>
+            </aside>
+
+            <figure class="diagram-card dark-diagram multi-agent-diagram">
+              <img src="assets/multi-agent-worktrees.svg" alt="แผนภาพ repository กลางแตกเป็นสาม worktree และสาม branch สำหรับ Agent Auth, UI และ Tests ก่อนส่งกลับเข้า integration queue" width="900" height="410" loading="lazy" />
+              <figcaption><span>FIG. 03</span> หนึ่ง repository ใช้ object database ร่วมกันได้ แต่แต่ละ Agent ต้องมี worktree และ branch ของตัวเอง</figcaption>
+            </figure>
+
+            <div class="agent-principles" role="list" aria-label="หลักการทำงานหลาย Agent">
+              <div class="agent-principle" role="listitem"><span>01</span><h3>แยกพื้นที่</h3><p>หนึ่ง Agent เท่ากับหนึ่ง <code>git worktree</code> และหนึ่ง branch ห้ามแชร์ directory ทำงาน</p></div>
+              <div class="agent-principle" role="listitem"><span>02</span><h3>แยก ownership</h3><p>กำหนดว่า Agent ใดเป็นเจ้าของไฟล์หรือ module ไหน และระบุ shared hotspot ไว้ก่อนเริ่ม</p></div>
+              <div class="agent-principle" role="listitem"><span>03</span><h3>รวมงานทีละชุด</h3><p>ให้ Integrator review, test และ merge ตามลำดับ แล้วแจ้ง Agent ที่เหลือให้อัปเดตฐานใหม่</p></div>
+            </div>
+
+            <h3 class="subheading">1. สร้าง worktree แยกให้แต่ละ Agent</h3>
+            <p class="section-copy">รันจาก repository หลัก ตัวอย่างนี้สร้าง directory เป็นพี่น้องกับ repo เดิม แต่ทุก worktree ยังใช้ประวัติ Git ชุดเดียวกัน จึงประหยัดกว่าการ clone ซ้ำ</p>
+            <div class="code-block agent-code">
+              <div class="code-heading"><span>เตรียมพื้นที่สำหรับ Agent 3 ตัว</span><button class="copy-button" type="button" data-copy="git fetch origin&#10;git worktree add ../repo-agent-auth -b agent/auth origin/main&#10;git worktree add ../repo-agent-ui -b agent/ui origin/main&#10;git worktree add ../repo-agent-tests -b agent/tests origin/main&#10;git worktree list">copy</button></div>
+              <code><span class="prompt">$</span> git fetch origin<br /><span class="prompt">$</span> git worktree add ../repo-agent-auth -b agent/auth origin/main<br /><span class="prompt">$</span> git worktree add ../repo-agent-ui -b agent/ui origin/main<br /><span class="prompt">$</span> git worktree add ../repo-agent-tests -b agent/tests origin/main<br /><span class="prompt">$</span> git worktree list</code>
+            </div>
+            <aside class="callout callout-blue"><span class="callout-icon" aria-hidden="true">i</span><p><strong>ข้อจำกัดของ worktree</strong><br />branch เดียวกันไม่สามารถ checkout อยู่ในหลาย worktree พร้อมกันได้ นี่เป็น guardrail ที่ช่วยบังคับให้แต่ละ Agent ใช้ branch แยกกัน</p></aside>
+
+            <h3 class="subheading">2. แจกงานด้วย ownership board</h3>
+            <div class="ownership-board" role="table" aria-label="ตัวอย่างการแบ่ง ownership ระหว่าง Agent">
+              <div class="ownership-head" role="row"><span role="columnheader">Agent / Branch</span><span role="columnheader">ขอบเขตหลัก</span><span role="columnheader">ห้ามแก้เอง</span></div>
+              <div class="ownership-row" role="row"><div role="cell"><strong>AUTH</strong><code>agent/auth</code></div><p role="cell"><code>src/auth/**</code><br /><code>tests/auth/**</code></p><p role="cell">UI และ lockfile</p></div>
+              <div class="ownership-row" role="row"><div role="cell"><strong>UI</strong><code>agent/ui</code></div><p role="cell"><code>src/components/**</code><br /><code>styles/**</code></p><p role="cell">Auth logic</p></div>
+              <div class="ownership-row" role="row"><div role="cell"><strong>TESTS</strong><code>agent/tests</code></div><p role="cell"><code>tests/e2e/**</code><br /><code>fixtures/**</code></p><p role="cell">Production code*</p></div>
+              <div class="ownership-row integrator-row" role="row"><div role="cell"><strong>INTEGRATOR</strong><code>integration/batch-42</code></div><p role="cell">lockfile, migration,<br />generated files</p><p role="cell">ฟีเจอร์ใหม่</p></div>
+            </div>
+            <p class="table-footnote">* ถ้า Test Agent พบ bug ให้รายงาน owner ก่อน เว้นแต่ได้รับมอบหมายให้แก้โดยตรง</p>
+
+            <div class="hotspot-grid">
+              <div class="hotspot-card"><span class="hotspot-icon" aria-hidden="true">◆</span><h3>Lockfile</h3><p><code>package-lock.json</code>, <code>pnpm-lock.yaml</code> ให้ Agent เดียวรับผิดชอบ dependency batch นั้น</p></div>
+              <div class="hotspot-card"><span class="hotspot-icon" aria-hidden="true">↗</span><h3>Migration</h3><p>จองลำดับหรือ timestamp ก่อนสร้าง เพื่อไม่ให้สอง Agent สร้าง migration ชนกัน</p></div>
+              <div class="hotspot-card"><span class="hotspot-icon" aria-hidden="true">⚙</span><h3>Generated files</h3><p>ให้ Integrator รัน codegen หลังรวม source changes แล้ว อย่าให้ทุก Agent generate แยกกัน</p></div>
+            </div>
+
+            <h3 class="subheading">3. สัญญา handoff ก่อนส่งงาน</h3>
+            <p class="section-copy">Agent ทุกตัวควรส่งข้อมูลชุดเดียวกัน เพื่อให้ผู้รวมงานตรวจได้เร็วและไม่ต้องเดาว่าทดสอบอะไรมาแล้ว</p>
+            <div class="handoff-card">
+              <div class="handoff-top"><span>AGENT HANDOFF / TEMPLATE</span><button class="copy-button" type="button" data-copy="AGENT: auth&#10;BRANCH: agent/auth&#10;BASE: origin/main @ &lt;commit&gt;&#10;SCOPE: src/auth/**, tests/auth/**&#10;COMMITS: &lt;hashes&gt;&#10;TESTS: &lt;commands + results&gt;&#10;RISKS: &lt;known risks or none&gt;&#10;NEEDS: &lt;dependency on another agent or none&gt;">copy</button></div>
+              <dl class="handoff-grid">
+                <div><dt>AGENT</dt><dd>auth</dd></div><div><dt>BRANCH</dt><dd><code>agent/auth</code></dd></div>
+                <div><dt>BASE</dt><dd><code>origin/main @ a1b2c3d</code></dd></div><div><dt>SCOPE</dt><dd><code>src/auth/**</code></dd></div>
+                <div><dt>COMMITS</dt><dd><code>9f3ae81</code></dd></div><div><dt>TESTS</dt><dd><code>npm test -- auth</code> ✓</dd></div>
+                <div><dt>RISKS</dt><dd>session migration</dd></div><div><dt>NEEDS</dt><dd>UI consumes new type</dd></div>
+              </dl>
+            </div>
+
+            <h3 class="subheading">4. Sync และรวมงานอย่างปลอดภัย</h3>
+            <div class="integration-flow">
+              <div class="integration-step"><span>01</span><div><h3>Worker sync เฉพาะ branch ตัวเอง</h3><p>ก่อน handoff ให้อัปเดตฐานและรันทดสอบอีกครั้ง</p><code>git fetch origin<br />git rebase origin/main</code></div></div>
+              <div class="integration-step"><span>02</span><div><h3>Integrator ดู diff และ test</h3><p>ตรวจทุก commit เทียบกับ main โดยไม่พึ่งคำอธิบายอย่างเดียว</p><code>git diff origin/main...agent/auth</code></div></div>
+              <div class="integration-step"><span>03</span><div><h3>Merge ทีละ Agent</h3><p>หลัง merge แต่ละชุด ให้รัน test ก่อนรับชุดถัดไป</p><code>git merge --no-ff agent/auth</code></div></div>
+              <div class="integration-step"><span>04</span><div><h3>แจ้ง Agent ที่เหลือ rebase</h3><p>ลด conflict สะสมโดยให้ทุก branch ขยับตาม main ล่าสุด</p><code>git rebase origin/main</code></div></div>
+            </div>
+
+            <aside class="callout callout-orange"><span class="callout-icon" aria-hidden="true">!</span><p><strong>ใช้ <code>--force-with-lease</code> เฉพาะ branch ของตัวเอง</strong><br />หลัง rebase อาจต้อง force push แต่ห้าม force push <code>main</code>, integration branch หรือ branch ที่มี Agent อื่นใช้อยู่</p></aside>
+
+            <h3 class="subheading">5. ปิดงานและเก็บกวาด</h3>
+            <div class="code-block agent-code">
+              <div class="code-heading"><span>ทำหลัง merge และ worktree สะอาดแล้ว</span><button class="copy-button" type="button" data-copy="git worktree remove ../repo-agent-auth&#10;git branch -d agent/auth&#10;git worktree prune">copy</button></div>
+              <code><span class="prompt">$</span> git worktree remove ../repo-agent-auth<br /><span class="prompt">$</span> git branch -d agent/auth<br /><span class="prompt">$</span> git worktree prune</code>
+            </div>
+
+            <a class="playbook-link" href="MULTI_AGENT_WORKFLOW.md">
+              <span><small>COMPANION FILE</small><strong>เปิด Multi-Agent Git Playbook</strong></span>
+              <span aria-hidden="true">↗</span>
+            </a>
+          </section>
+
+          <section class="guide-section" id="cheatsheet" aria-labelledby="cheatsheet-title">
+            <div class="section-marker"><span>09</span><i></i></div>
             <p class="section-kicker">KEEP THIS NEARBY</p>
             <h2 id="cheatsheet-title">Cheat sheet<br /><span>คำสั่งที่ใช้บ่อยในหน้าเดียว</span></h2>
             <p>ไม่จำเป็นต้องจำทั้งหมด เริ่มจาก 8 คำสั่งที่อยู่ในวงจรประจำวัน แล้วค่อยเติมคำสั่งอื่นตามสถานการณ์</p>

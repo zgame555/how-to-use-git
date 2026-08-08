@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 410" role="img" aria-labelledby="title desc">
+  <title id="title">Multi-agent Git worktree architecture</title>
+  <desc id="desc">A shared Git repository creates separate worktrees and branches for Auth, UI, and Test agents, which submit work to an integration queue.</desc>
+  <defs>
+    <marker id="orange-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#f17a52"/></marker>
+    <marker id="teal-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#83c4ca"/></marker>
+  </defs>
+  <rect width="900" height="410" fill="#16282e"/>
+  <path d="M0 44H900" stroke="#2d4a4e"/>
+  <text x="28" y="29" fill="#8ba3a0" font-family="monospace" font-size="11" letter-spacing="2">FIG. 03 / ONE REPO, ISOLATED WORKSPACES</text>
+
+  <g font-family="Arial, sans-serif">
+    <rect x="40" y="102" width="200" height="184" rx="5" fill="#20383d" stroke="#83c4ca" stroke-width="2"/>
+    <circle cx="140" cy="148" r="25" fill="#29494e" stroke="#83c4ca" stroke-width="2"/>
+    <path d="M128 148h24M140 136v24" stroke="#83c4ca" stroke-width="2"/>
+    <text x="140" y="196" text-anchor="middle" fill="#e4eeeb" font-size="17" font-weight="700">SHARED REPO</text>
+    <text x="140" y="218" text-anchor="middle" fill="#91aaa6" font-family="monospace" font-size="11">objects + history + refs</text>
+    <rect x="73" y="239" width="134" height="24" rx="12" fill="#16282e"/>
+    <text x="140" y="255" text-anchor="middle" fill="#f3bd72" font-family="monospace" font-size="10">main @ a1b2c3d</text>
+
+    <path d="M241 150H316" stroke="#f17a52" stroke-width="2" marker-end="url(#orange-arrow)"/>
+    <path d="M241 194H316" stroke="#f17a52" stroke-width="2" marker-end="url(#orange-arrow)"/>
+    <path d="M241 238H316" stroke="#f17a52" stroke-width="2" marker-end="url(#orange-arrow)"/>
+
+    <g>
+      <rect x="325" y="88" width="260" height="80" rx="4" fill="#f2dfd0" stroke="#f17a52" stroke-width="2"/>
+      <rect x="325" y="177" width="260" height="80" rx="4" fill="#d9e8eb" stroke="#83c4ca" stroke-width="2"/>
+      <rect x="325" y="266" width="260" height="80" rx="4" fill="#d4e8dc" stroke="#8bcd9e" stroke-width="2"/>
+      <text x="344" y="112" fill="#c74124" font-size="10" font-weight="700" letter-spacing="1">WORKTREE A</text>
+      <text x="344" y="138" fill="#12242c" font-size="17" font-weight="700">AUTH AGENT</text>
+      <text x="344" y="157" fill="#667674" font-family="monospace" font-size="10">../repo-agent-auth · agent/auth</text>
+      <text x="344" y="201" fill="#2c6386" font-size="10" font-weight="700" letter-spacing="1">WORKTREE B</text>
+      <text x="344" y="227" fill="#12242c" font-size="17" font-weight="700">UI AGENT</text>
+      <text x="344" y="246" fill="#667674" font-family="monospace" font-size="10">../repo-agent-ui · agent/ui</text>
+      <text x="344" y="290" fill="#2e795d" font-size="10" font-weight="700" letter-spacing="1">WORKTREE C</text>
+      <text x="344" y="316" fill="#12242c" font-size="17" font-weight="700">TEST AGENT</text>
+      <text x="344" y="335" fill="#667674" font-family="monospace" font-size="10">../repo-agent-tests · agent/tests</text>
+      <circle cx="556" cy="128" r="9" fill="#ef5b35"/><circle cx="556" cy="217" r="9" fill="#2c6386"/><circle cx="556" cy="306" r="9" fill="#2e795d"/>
+    </g>
+
+    <path d="M586 128C647 128 639 170 683 170" fill="none" stroke="#83c4ca" stroke-width="2" marker-end="url(#teal-arrow)"/>
+    <path d="M586 217H675" fill="none" stroke="#83c4ca" stroke-width="2" marker-end="url(#teal-arrow)"/>
+    <path d="M586 306C647 306 639 264 683 264" fill="none" stroke="#83c4ca" stroke-width="2" marker-end="url(#teal-arrow)"/>
+
+    <rect x="686" y="128" width="174" height="178" rx="5" fill="#20383d" stroke="#f3bd72" stroke-width="2"/>
+    <text x="773" y="157" text-anchor="middle" fill="#f3bd72" font-size="10" font-weight="700" letter-spacing="1.5">INTEGRATION QUEUE</text>
+    <rect x="711" y="177" width="124" height="27" rx="3" fill="#2b484c"/><text x="773" y="195" text-anchor="middle" fill="#e2ece9" font-family="monospace" font-size="10">01 review diff</text>
+    <rect x="711" y="213" width="124" height="27" rx="3" fill="#2b484c"/><text x="773" y="231" text-anchor="middle" fill="#e2ece9" font-family="monospace" font-size="10">02 run tests</text>
+    <rect x="711" y="249" width="124" height="27" rx="3" fill="#2b484c"/><text x="773" y="267" text-anchor="middle" fill="#e2ece9" font-family="monospace" font-size="10">03 merge one</text>
+    <text x="773" y="293" text-anchor="middle" fill="#8fa6a2" font-size="10">then update remaining agents</text>
+
+    <path d="M773 307V358H140V291" fill="none" stroke="#f17a52" stroke-width="2" stroke-dasharray="6 6" marker-end="url(#orange-arrow)"/>
+    <text x="455" y="381" text-anchor="middle" fill="#f17a52" font-size="11" font-weight="700">MERGE → TEST → UPDATE MAIN → REBASE REMAINING BRANCHES</text>
+  </g>
+</svg>
