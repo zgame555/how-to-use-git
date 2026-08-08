@@ -24,9 +24,10 @@
           <a href="#start">เริ่มต้น</a>
           <a href="#workflow">Workflow</a>
           <a href="#branching">Branch</a>
-          <a href="#collab">ทำงานเป็นทีม</a>
+          <a href="#collab">Remote</a>
           <a href="#multi-agent">หลาย Agent</a>
           <a href="#jira-style">Jira style</a>
+          <a href="#teamwork">Teamwork</a>
           <button class="theme-toggle" type="button" aria-label="สลับโหมดสี" data-theme-toggle>
             <span aria-hidden="true">◐</span><span class="theme-label">โหมดกลางคืน</span>
           </button>
@@ -47,7 +48,7 @@
             <a class="button button-quiet" href="#cheatsheet">ดู cheat sheet <span aria-hidden="true">⌘K</span></a>
           </div>
           <div class="hero-meta">
-            <span><strong>อ่านจบใน</strong> 45 นาที</span>
+            <span><strong>อ่านจบใน</strong> 60 นาที</span>
             <span class="meta-rule" aria-hidden="true"></span>
             <span><strong>ระดับ</strong> Beginner → Team workflow</span>
           </div>
@@ -80,7 +81,7 @@
         <div class="shell intro-grid">
           <div class="intro-label">THE BIG IDEA <span>↓</span></div>
           <p>Git คือ <strong>สมุดบันทึกการเปลี่ยนแปลง</strong> ของโปรเจกต์ ทุก commit คือจุดพักที่ย้อนกลับไปดูได้ว่า “ใครแก้อะไร เมื่อไหร่ และทำไม”</p>
-          <div class="intro-number">01<span>/10</span></div>
+          <div class="intro-number">01<span>/11</span></div>
         </div>
       </section>
 
@@ -98,7 +99,8 @@
               <a href="#recovery"><span>07</span> แก้พลาดอย่างปลอดภัย</a>
               <a href="#multi-agent"><span>08</span> หลาย Agent ใน repo</a>
               <a href="#jira-style"><span>09</span> Git × Jira workflow</a>
-              <a href="#cheatsheet"><span>10</span> Cheat sheet</a>
+              <a href="#teamwork"><span>10</span> Git Teamwork</a>
+              <a href="#cheatsheet"><span>11</span> Cheat sheet</a>
             </nav>
             <div class="rail-note">
               <span class="rail-note-icon" aria-hidden="true">✦</span>
@@ -479,8 +481,121 @@
             </a>
           </section>
 
-          <section class="guide-section" id="cheatsheet" aria-labelledby="cheatsheet-title">
+          <section class="guide-section" id="teamwork" aria-labelledby="teamwork-title">
             <div class="section-marker"><span>10</span><i></i></div>
+            <p class="section-kicker">MOVE AS ONE TEAM</p>
+            <h2 id="teamwork-title">Git Teamwork<br /><span>ส่งงานต่อกันโดยไม่เสียจังหวะ</span></h2>
+            <p class="lead">Git ช่วยเก็บประวัติ แต่ <strong>team convention</strong> ทำให้คนหลายคนแก้ repo เดียวกันได้อย่างคาดเดาได้ ทีมที่ดีตกลงร่วมกันว่า branch เริ่มจากไหน, update อย่างไร, review อะไร และใครมีสิทธิ์ merge</p>
+
+            <figure class="diagram-card dark-diagram team-diagram">
+              <img src="assets/git-teamwork-flow.svg" alt="แผนภาพสมาชิกทีมสามคนทำงานบน branch แยกกัน ส่งเข้า Pull Request, review และ CI ก่อนรวมเข้า main" width="900" height="390" loading="lazy" />
+              <figcaption><span>FIG. 05</span> แต่ละคนทำงานบน branch ของตัวเอง แล้วพบกันที่ Pull Request ซึ่งเป็นจุด review, test และตัดสินใจ merge</figcaption>
+            </figure>
+
+            <aside class="callout callout-orange"><span class="callout-icon" aria-hidden="true">!</span><p><strong>Teamwork ไม่ได้แปลว่าแชร์ branch เดียวกัน</strong><br />ค่าเริ่มต้นที่ปลอดภัยคือหนึ่งงานต่อหนึ่ง branch และหนึ่ง owner ถ้าต้อง pair บน shared branch ให้ประกาศ owner, ห้าม rebase/force push และ push เป็นรอบที่สื่อสารกันชัดเจน</p></aside>
+
+            <h3 class="subheading">1. เขียน Team Git Contract ก่อนเริ่ม</h3>
+            <div class="team-charter" role="list" aria-label="ข้อตกลง Git ขั้นพื้นฐานของทีม">
+              <div class="team-charter-card" role="listitem"><span>MAIN</span><h3>พร้อมส่งเสมอ</h3><p>ห้าม commit ตรง ใช้ PR, required review และ CI ก่อน merge</p></div>
+              <div class="team-charter-card" role="listitem"><span>BRANCH</span><h3>สั้นและมี owner</h3><p>หนึ่ง branch มีหนึ่ง objective; merge แล้วลบเพื่อลด branch ค้าง</p></div>
+              <div class="team-charter-card" role="listitem"><span>HISTORY</span><h3>เลือก strategy เดียว</h3><p>ทีมต้องตกลงว่าจะ squash, merge commit หรือ rebase merge</p></div>
+              <div class="team-charter-card" role="listitem"><span>QUALITY</span><h3>CI คือหลักฐาน</h3><p>Review ดู intent และ risk ส่วน test/lint/typecheck ให้ระบบตรวจซ้ำ</p></div>
+            </div>
+
+            <div class="team-contract-template">
+              <div class="code-heading"><span>COPY-READY TEAM CONTRACT</span><button class="copy-button" type="button" data-copy="DEFAULT BRANCH: main&#10;DIRECT PUSH: prohibited&#10;BRANCH: &lt;type&gt;/&lt;ticket-or-topic&gt;&#10;UPDATE OWN BRANCH: rebase origin/main&#10;UPDATE SHARED BRANCH: merge origin/main&#10;MERGE STRATEGY: squash&#10;REQUIRED: CI + 1 approval + resolved conversations&#10;FORCE PUSH: own branch only, --force-with-lease&#10;DELETE BRANCH AFTER MERGE: yes">copy</button></div>
+              <code>DEFAULT BRANCH: main<br />DIRECT PUSH: prohibited<br />BRANCH: &lt;type&gt;/&lt;ticket-or-topic&gt;<br />MERGE STRATEGY: squash<br />REQUIRED: CI + 1 approval + resolved conversations<br />FORCE PUSH: own branch only, <span class="string">--force-with-lease</span></code>
+            </div>
+
+            <h3 class="subheading">2. Daily loop ของสมาชิกทีม</h3>
+            <div class="team-daily-loop" role="list" aria-label="วงจรการทำงาน Git ประจำวันของทีม">
+              <div role="listitem"><span>01</span><strong>SYNC MAIN</strong><p>เริ่มจากฐานล่าสุด</p></div>
+              <div role="listitem"><span>02</span><strong>CREATE BRANCH</strong><p>หนึ่งงานต่อ branch</p></div>
+              <div role="listitem"><span>03</span><strong>COMMIT SMALL</strong><p>บันทึก intent เป็นก้อนเล็ก</p></div>
+              <div role="listitem"><span>04</span><strong>PUSH EARLY</strong><p>backup และเปิด draft PR</p></div>
+              <div role="listitem"><span>05</span><strong>REVIEW + CI</strong><p>ตรวจ behavior, risk และ test</p></div>
+              <div role="listitem"><span>06</span><strong>MERGE + CLEAN</strong><p>รวม ลบ branch และ sync ใหม่</p></div>
+            </div>
+            <div class="code-block agent-code team-daily-code">
+              <div class="code-heading"><span>ตัวอย่างหนึ่งรอบการทำงาน</span><button class="copy-button" type="button" data-copy="git switch main&#10;git pull --ff-only origin main&#10;git switch -c feature/PAY-142-card-payment&#10;git add src/payment tests/payment&#10;git commit -m &quot;feat(payment): PAY-142 validate card&quot;&#10;git push -u origin feature/PAY-142-card-payment">copy</button></div>
+              <code><span class="prompt">$</span> git switch main<br /><span class="prompt">$</span> git pull --ff-only origin main<br /><span class="prompt">$</span> git switch -c feature/PAY-142-card-payment<br /><span class="prompt">$</span> git add src/payment tests/payment<br /><span class="prompt">$</span> git commit -m <span class="string">"feat(payment): PAY-142 validate card"</span><br /><span class="prompt">$</span> git push -u origin feature/PAY-142-card-payment</code>
+            </div>
+
+            <h3 class="subheading">3. แบ่งบทบาทใน Pull Request</h3>
+            <div class="team-roles">
+              <article><span class="role-mark author-mark" aria-hidden="true">A</span><h3>Author</h3><p>ทำ PR ให้เล็ก อธิบาย why, test, risk และตอบทุก comment โดยไม่ merge เองก่อนผ่านกติกา</p></article>
+              <article><span class="role-mark reviewer-mark" aria-hidden="true">R</span><h3>Reviewer</h3><p>ตรวจ correctness, edge cases, maintainability และ scope ระบุให้ชัดว่า comment ไหน blocking</p></article>
+              <article><span class="role-mark maintainer-mark" aria-hidden="true">M</span><h3>Maintainer</h3><p>ดูภาพรวม branch policy, CI, compatibility, merge order และเป็นผู้ตัดสิน conflict ข้าม domain</p></article>
+            </div>
+
+            <h3 class="subheading">4. Update branch ให้ตรงกับชนิดของ branch</h3>
+            <div class="sync-lanes">
+              <div class="sync-lane own-lane"><span>OWN BRANCH</span><h3>มีคนเดียวใช้งาน</h3><p>rebase เพื่อให้ประวัติตรงและอ่านง่าย หลัง rebase push ด้วย lease</p><code>git fetch origin<br />git rebase origin/main<br />git push --force-with-lease</code></div>
+              <div class="sync-lane shared-lane"><span>SHARED BRANCH</span><h3>มีหลายคนใช้งาน</h3><p>merge เพื่อไม่ rewrite commit ที่เพื่อนอาจอ้างอิงอยู่ แล้ว push ปกติ</p><code>git fetch origin<br />git merge origin/main<br />git push</code></div>
+            </div>
+            <aside class="callout callout-red"><span class="callout-icon" aria-hidden="true">×</span><p><strong>ห้าม rebase branch ที่แชร์แล้วโดยไม่ตกลง</strong><br />rebase เปลี่ยน commit hash ทำให้เพื่อนที่มี history เดิมต้องแก้ branch ตาม และเสี่ยง push ทับงานกัน</p></aside>
+
+            <h3 class="subheading">5. PR handoff ที่ reviewer เปิดแล้วเริ่มได้ทันที</h3>
+            <div class="team-pr-board">
+              <div class="team-pr-header"><span>PR / READY</span><strong>PAY-142: Add card payment</strong><small>+284 −61 · 8 files</small></div>
+              <div class="team-pr-checks" role="list" aria-label="ข้อมูลที่ Pull Request ควรมี">
+                <div role="listitem"><span>01</span><p><strong>WHY</strong> ปัญหาและผลลัพธ์ที่ต้องการ</p></div>
+                <div role="listitem"><span>02</span><p><strong>WHAT</strong> ขอบเขตที่เปลี่ยนและไม่เปลี่ยน</p></div>
+                <div role="listitem"><span>03</span><p><strong>VERIFY</strong> คำสั่ง test และหลักฐาน</p></div>
+                <div role="listitem"><span>04</span><p><strong>RISK</strong> compatibility, migration, security</p></div>
+                <div role="listitem"><span>05</span><p><strong>ROLLBACK</strong> วิธีถอยกลับหรือปิด feature</p></div>
+                <div role="listitem"><span>06</span><p><strong>REVIEW MAP</strong> จุดที่อยากให้ reviewer โฟกัส</p></div>
+              </div>
+            </div>
+
+            <h3 class="subheading">6. ใช้ภาษากลางใน code review</h3>
+            <div class="review-signals">
+              <div class="blocking"><span>BLOCKING</span><p>ต้องแก้ก่อน merge เพราะกระทบ correctness, security หรือ requirement</p></div>
+              <div class="suggestion"><span>SUGGESTION</span><p>ทางเลือกที่น่าจะดีขึ้น แต่ author อธิบายเหตุผลและเลือกไม่ทำได้</p></div>
+              <div class="question"><span>QUESTION</span><p>ขอ context หรือเช็กความเข้าใจ ยังไม่ใช่คำสั่งให้เปลี่ยน</p></div>
+              <div class="nit"><span>NIT</span><p>รายละเอียดเล็กที่ไม่ควรขวาง merge และควรให้ formatter จัดการเมื่อทำได้</p></div>
+            </div>
+            <aside class="callout callout-mint"><span class="callout-icon" aria-hidden="true">✓</span><p><strong>Review code ไม่ใช่ review คน</strong><br />อ้าง behavior, test, requirement หรือ convention แทนคำตัดสินส่วนตัว เช่น “กรณี timeout นี้ยังไม่มี test” ชัดกว่า “โค้ดส่วนนี้ไม่ดี”</p></aside>
+
+            <h3 class="subheading">7. เลือก Merge Strategy ให้เหมาะกับทีม</h3>
+            <div class="merge-matrix" role="table" aria-label="เปรียบเทียบ Git merge strategies">
+              <div class="merge-head" role="row"><span role="columnheader">Strategy</span><span role="columnheader">จุดเด่น</span><span role="columnheader">เหมาะเมื่อ</span><span role="columnheader">ข้อแลกเปลี่ยน</span></div>
+              <div class="merge-row" role="row"><div role="cell"><strong>Squash merge</strong><code>1 PR = 1 commit</code></div><p role="cell">main สะอาด ย้อน PR ง่าย</p><p role="cell">ทีมใช้ commit ระหว่างทำงานเป็น draft</p><p role="cell">รายละเอียด commit ย่อยหาย</p></div>
+              <div class="merge-row" role="row"><div role="cell"><strong>Merge commit</strong><code>--no-ff</code></div><p role="cell">รักษา branch context และทุก commit</p><p role="cell">commit history มีคุณค่าและดูแลดี</p><p role="cell">graph ซับซ้อนขึ้น</p></div>
+              <div class="merge-row" role="row"><div role="cell"><strong>Rebase merge</strong><code>linear history</code></div><p role="cell">ประวัติเป็นเส้นตรงและเก็บ commit</p><p role="cell">ทุก commit พร้อมอยู่บน main</p><p role="cell">ต้องดูแล commit คุณภาพสูง</p></div>
+            </div>
+            <p class="table-footnote">ไม่มี strategy ที่ดีที่สุดทุกทีม สิ่งสำคัญคือเลือกหนึ่งแบบเป็น default และกำหนดข้อยกเว้นให้ชัด</p>
+
+            <h3 class="subheading">8. ป้องกัน conflict ก่อนเกิด</h3>
+            <div class="team-conflict-flow" role="list" aria-label="ขั้นตอนลด merge conflict ในทีม">
+              <div role="listitem"><span>01</span><h3>ประกาศ scope</h3><p>แจ้งก่อนแก้ shared files เช่น routes, schema, lockfile</p></div>
+              <div role="listitem"><span>02</span><h3>แบ่ง PR เล็ก</h3><p>merge foundation ก่อน แล้วให้ branch อื่นอัปเดตฐาน</p></div>
+              <div role="listitem"><span>03</span><h3>Sync บ่อย</h3><p>อย่าปล่อย branch แยกจาก main นานโดยไม่มีเหตุผล</p></div>
+              <div role="listitem"><span>04</span><h3>ให้ owner ตัดสิน</h3><p>conflict ด้าน behavior ต้องถาม domain owner ไม่ใช่เลือกบรรทัดที่ compile</p></div>
+            </div>
+
+            <h3 class="subheading">9. Hotfix เมื่อ production มีปัญหา</h3>
+            <div class="hotfix-card">
+              <div><span>01</span><p>สร้าง <code>hotfix/INC-77-restore-login</code> จาก production/main commit ที่ถูกต้อง</p></div>
+              <div><span>02</span><p>ทำ minimal fix พร้อม regression test หลีกเลี่ยง refactor ที่ไม่จำเป็น</p></div>
+              <div><span>03</span><p>เปิด PR แบบเร่งด่วน แต่ยังต้องมี reviewer และ CI เท่าที่จำเป็น</p></div>
+              <div><span>04</span><p>deploy, verify และ merge/backport ไปทุก branch ที่ยังใช้งาน</p></div>
+            </div>
+
+            <h3 class="subheading">10. ปิดงานและเริ่มรอบใหม่</h3>
+            <div class="code-block agent-code">
+              <div class="code-heading"><span>หลัง PR merge แล้ว</span><button class="copy-button" type="button" data-copy="git switch main&#10;git pull --ff-only origin main&#10;git branch -d feature/PAY-142-card-payment&#10;git fetch --prune origin">copy</button></div>
+              <code><span class="prompt">$</span> git switch main<br /><span class="prompt">$</span> git pull --ff-only origin main<br /><span class="prompt">$</span> git branch -d feature/PAY-142-card-payment<br /><span class="prompt">$</span> git fetch --prune origin</code>
+            </div>
+
+            <a class="playbook-link team-playbook-link" href="TEAM_GIT_WORKFLOW.md">
+              <span><small>COMPANION FILE</small><strong>เปิด Team Git Workflow Playbook</strong></span>
+              <span aria-hidden="true">↗</span>
+            </a>
+          </section>
+
+          <section class="guide-section" id="cheatsheet" aria-labelledby="cheatsheet-title">
+            <div class="section-marker"><span>11</span><i></i></div>
             <p class="section-kicker">KEEP THIS NEARBY</p>
             <h2 id="cheatsheet-title">Cheat sheet<br /><span>คำสั่งที่ใช้บ่อยในหน้าเดียว</span></h2>
             <p>ไม่จำเป็นต้องจำทั้งหมด เริ่มจาก 8 คำสั่งที่อยู่ในวงจรประจำวัน แล้วค่อยเติมคำสั่งอื่นตามสถานการณ์</p>

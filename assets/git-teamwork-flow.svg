@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 390" role="img" aria-labelledby="title desc">
+  <title id="title">Git teamwork pull request flow</title>
+  <desc id="desc">Three team members work on separate branches that enter a pull request review and continuous integration gate before merging to main.</desc>
+  <defs>
+    <marker id="team-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#83c4ca"/></marker>
+    <marker id="merge-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#f17a52"/></marker>
+  </defs>
+  <rect width="900" height="390" fill="#16282e"/>
+  <path d="M0 44H900" stroke="#2d4a4e"/>
+  <text x="28" y="29" fill="#8ba3a0" font-family="monospace" font-size="11" letter-spacing="2">FIG. 05 / SEPARATE BRANCHES, SHARED QUALITY GATE</text>
+
+  <g font-family="Arial, sans-serif">
+    <g>
+      <rect x="36" y="78" width="220" height="70" rx="4" fill="#f2dfd0" stroke="#f17a52" stroke-width="2"/>
+      <circle cx="67" cy="113" r="18" fill="#ef5b35"/><text x="67" y="119" text-anchor="middle" fill="#fff" font-size="16" font-weight="700">A</text>
+      <text x="98" y="106" fill="#12242c" font-size="13" font-weight="700">AUTHOR · PAYMENT</text>
+      <text x="98" y="127" fill="#657571" font-family="monospace" font-size="10">feature/PAY-142-card</text>
+
+      <rect x="36" y="163" width="220" height="70" rx="4" fill="#d9e8eb" stroke="#83c4ca" stroke-width="2"/>
+      <circle cx="67" cy="198" r="18" fill="#2c6386"/><text x="67" y="204" text-anchor="middle" fill="#fff" font-size="16" font-weight="700">B</text>
+      <text x="98" y="191" fill="#12242c" font-size="13" font-weight="700">AUTHOR · CHECKOUT</text>
+      <text x="98" y="212" fill="#657571" font-family="monospace" font-size="10">feature/PAY-151-checkout</text>
+
+      <rect x="36" y="248" width="220" height="70" rx="4" fill="#d4e8dc" stroke="#8bcd9e" stroke-width="2"/>
+      <circle cx="67" cy="283" r="18" fill="#2e795d"/><text x="67" y="289" text-anchor="middle" fill="#fff" font-size="16" font-weight="700">C</text>
+      <text x="98" y="276" fill="#12242c" font-size="13" font-weight="700">AUTHOR · TESTS</text>
+      <text x="98" y="297" fill="#657571" font-family="monospace" font-size="10">test/PAY-160-payment-e2e</text>
+    </g>
+
+    <path d="M257 113C315 113 309 157 354 157" fill="none" stroke="#83c4ca" stroke-width="2" marker-end="url(#team-arrow)"/>
+    <path d="M257 198H346" fill="none" stroke="#83c4ca" stroke-width="2" marker-end="url(#team-arrow)"/>
+    <path d="M257 283C315 283 309 239 354 239" fill="none" stroke="#83c4ca" stroke-width="2" marker-end="url(#team-arrow)"/>
+
+    <rect x="357" y="111" width="184" height="174" rx="5" fill="#20383d" stroke="#f3bd72" stroke-width="2"/>
+    <text x="449" y="140" text-anchor="middle" fill="#f3bd72" font-size="10" font-weight="700" letter-spacing="1.5">PULL REQUEST</text>
+    <rect x="381" y="159" width="136" height="31" rx="3" fill="#2c4a4e"/><text x="449" y="179" text-anchor="middle" fill="#e3ece9" font-family="monospace" font-size="10">01 review intent</text>
+    <rect x="381" y="200" width="136" height="31" rx="3" fill="#2c4a4e"/><text x="449" y="220" text-anchor="middle" fill="#e3ece9" font-family="monospace" font-size="10">02 resolve comments</text>
+    <rect x="381" y="241" width="136" height="25" rx="3" fill="#2e795d"/><text x="449" y="258" text-anchor="middle" fill="#fff" font-family="monospace" font-size="10">approved ✓</text>
+
+    <path d="M542 198H584" stroke="#f17a52" stroke-width="2" marker-end="url(#merge-arrow)"/>
+    <rect x="589" y="132" width="128" height="132" rx="5" fill="#20383d" stroke="#83c4ca" stroke-width="2"/>
+    <text x="653" y="159" text-anchor="middle" fill="#83c4ca" font-size="10" font-weight="700" letter-spacing="1.5">CI GATE</text>
+    <text x="613" y="190" fill="#d9e6e2" font-family="monospace" font-size="10">✓ test</text>
+    <text x="613" y="213" fill="#d9e6e2" font-family="monospace" font-size="10">✓ lint</text>
+    <text x="613" y="236" fill="#d9e6e2" font-family="monospace" font-size="10">✓ typecheck</text>
+
+    <path d="M718 198H758" stroke="#f17a52" stroke-width="2" marker-end="url(#merge-arrow)"/>
+    <rect x="763" y="132" width="105" height="132" rx="5" fill="#d4e8dc" stroke="#8bcd9e" stroke-width="2"/>
+    <circle cx="815" cy="171" r="17" fill="#2e795d"/><path d="M807 171l6 6 11-13" fill="none" stroke="#fff" stroke-width="3"/>
+    <text x="815" y="211" text-anchor="middle" fill="#2e795d" font-size="14" font-weight="700">MAIN</text>
+    <text x="815" y="232" text-anchor="middle" fill="#557a6d" font-family="monospace" font-size="9">releasable</text>
+
+    <path d="M815 269V340H145V323" fill="none" stroke="#f17a52" stroke-width="2" stroke-dasharray="6 6" marker-end="url(#merge-arrow)"/>
+    <text x="480" y="364" text-anchor="middle" fill="#f17a52" font-size="11" font-weight="700">MERGE → DELETE BRANCH → EVERYONE SYNC MAIN → START NEXT TASK</text>
+  </g>
+</svg>
