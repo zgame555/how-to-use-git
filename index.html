@@ -26,6 +26,7 @@
           <a href="#branching">Branch</a>
           <a href="#collab">ทำงานเป็นทีม</a>
           <a href="#multi-agent">หลาย Agent</a>
+          <a href="#jira-style">Jira style</a>
           <button class="theme-toggle" type="button" aria-label="สลับโหมดสี" data-theme-toggle>
             <span aria-hidden="true">◐</span><span class="theme-label">โหมดกลางคืน</span>
           </button>
@@ -46,7 +47,7 @@
             <a class="button button-quiet" href="#cheatsheet">ดู cheat sheet <span aria-hidden="true">⌘K</span></a>
           </div>
           <div class="hero-meta">
-            <span><strong>อ่านจบใน</strong> 35 นาที</span>
+            <span><strong>อ่านจบใน</strong> 45 นาที</span>
             <span class="meta-rule" aria-hidden="true"></span>
             <span><strong>ระดับ</strong> Beginner → Team workflow</span>
           </div>
@@ -79,7 +80,7 @@
         <div class="shell intro-grid">
           <div class="intro-label">THE BIG IDEA <span>↓</span></div>
           <p>Git คือ <strong>สมุดบันทึกการเปลี่ยนแปลง</strong> ของโปรเจกต์ ทุก commit คือจุดพักที่ย้อนกลับไปดูได้ว่า “ใครแก้อะไร เมื่อไหร่ และทำไม”</p>
-          <div class="intro-number">01<span>/09</span></div>
+          <div class="intro-number">01<span>/10</span></div>
         </div>
       </section>
 
@@ -96,7 +97,8 @@
               <a href="#collab"><span>06</span> ทำงานกับ remote</a>
               <a href="#recovery"><span>07</span> แก้พลาดอย่างปลอดภัย</a>
               <a href="#multi-agent"><span>08</span> หลาย Agent ใน repo</a>
-              <a href="#cheatsheet"><span>09</span> Cheat sheet</a>
+              <a href="#jira-style"><span>09</span> Git × Jira workflow</a>
+              <a href="#cheatsheet"><span>10</span> Cheat sheet</a>
             </nav>
             <div class="rail-note">
               <span class="rail-note-icon" aria-hidden="true">✦</span>
@@ -374,8 +376,111 @@
             </a>
           </section>
 
-          <section class="guide-section" id="cheatsheet" aria-labelledby="cheatsheet-title">
+          <section class="guide-section" id="jira-style" aria-labelledby="jira-style-title">
             <div class="section-marker"><span>09</span><i></i></div>
+            <p class="section-kicker">ISSUE-DRIVEN DELIVERY</p>
+            <h2 id="jira-style-title">Git style Jira<br /><span>ให้ ticket เดินไปกับ code</span></h2>
+            <p class="lead">ใช้ Jira key เป็นด้ายเส้นเดียวที่เชื่อม requirement, branch, commit, Pull Request และ deployment เข้าด้วยกัน ตัวอย่างทั้งบทนี้ใช้ ticket <strong><code>PAY-142</code></strong>: “เพิ่มการชำระเงินด้วยบัตร”</p>
+
+            <figure class="diagram-card jira-diagram">
+              <img src="assets/git-jira-flow.svg" alt="แผนภาพ Jira ticket PAY-142 เชื่อมไปยัง feature branch, commits, Pull Request และย้อนกลับมาอัปเดตสถานะ Jira" width="900" height="360" loading="lazy" />
+              <figcaption><span>FIG. 04</span> ใส่ Jira key ใน branch, commit และ PR title เพื่อให้ development activity เชื่อมกลับไปยัง work item เดียวกัน</figcaption>
+            </figure>
+
+            <aside class="callout callout-blue"><span class="callout-icon" aria-hidden="true">i</span><p><strong>ต้องเชื่อม development tool ก่อน</strong><br />Jira จะแสดง branch, commit และ Pull Request ใน Development panel เมื่อผู้ดูแลเชื่อม GitHub, Bitbucket, GitLab หรือเครื่องมือที่รองรับ และทีมใช้ work item key ในกิจกรรม Git</p></aside>
+
+            <h3 class="subheading">1. Convention กลางของทีม</h3>
+            <div class="jira-contract" role="list" aria-label="Convention การเชื่อม Jira กับ Git">
+              <div class="jira-contract-row" role="listitem"><span class="jira-contract-key">TICKET</span><code>PAY-142</code><p>Key ต้องเป็นตัวพิมพ์ใหญ่และตรงกับ Jira</p></div>
+              <div class="jira-contract-row" role="listitem"><span class="jira-contract-key">BRANCH</span><code>feature/PAY-142-card-payment</code><p>ประเภท / key / คำอธิบายสั้นแบบ kebab-case</p></div>
+              <div class="jira-contract-row" role="listitem"><span class="jira-contract-key">COMMIT</span><code>feat(payment): PAY-142 validate card</code><p>Conventional Commit + Jira key + สิ่งที่เปลี่ยน</p></div>
+              <div class="jira-contract-row" role="listitem"><span class="jira-contract-key">PR TITLE</span><code>PAY-142: Add card payment</code><p>เก็บ key ไว้ใน title แม้ใช้ squash merge</p></div>
+            </div>
+
+            <aside class="callout callout-mint"><span class="callout-icon" aria-hidden="true">✓</span><p><strong>กฎจำง่าย</strong><br />หนึ่ง Jira ticket ควรสร้างหนึ่ง branch และหนึ่ง Pull Request ถ้า ticket ใหญ่จนต้องมีหลาย branch ให้แตกเป็น Jira subtasks ก่อน</p></aside>
+
+            <h3 class="subheading">2. ตั้งชื่อ branch ตามประเภทงาน</h3>
+            <div class="jira-branch-grid">
+              <div><span>FEATURE</span><code>feature/PAY-142-card-payment</code><p>ความสามารถใหม่ตาม story</p></div>
+              <div><span>BUGFIX</span><code>bugfix/PAY-203-gateway-timeout</code><p>แก้ defect ในงานปกติ</p></div>
+              <div><span>HOTFIX</span><code>hotfix/OPS-77-restore-login</code><p>แก้ production เร่งด่วน</p></div>
+              <div><span>CHORE</span><code>chore/DEV-91-upgrade-eslint</code><p>งานระบบหรือ maintenance</p></div>
+            </div>
+            <div class="code-block agent-code">
+              <div class="code-heading"><span>สร้าง branch จาก main ล่าสุด</span><button class="copy-button" type="button" data-copy="git switch main&#10;git pull --ff-only origin main&#10;git switch -c feature/PAY-142-card-payment">copy</button></div>
+              <code><span class="prompt">$</span> git switch main<br /><span class="prompt">$</span> git pull --ff-only origin main<br /><span class="prompt">$</span> git switch -c feature/PAY-142-card-payment</code>
+            </div>
+
+            <h3 class="subheading">3. Commit ให้ทั้งคนและ Jira อ่านรู้เรื่อง</h3>
+            <p class="section-copy">ใช้รูปแบบ <code>&lt;type&gt;(&lt;scope&gt;): &lt;JIRA-KEY&gt; &lt;imperative summary&gt;</code> และแยก commit ตามเหตุผล ไม่ใช่ตามจำนวนไฟล์</p>
+            <div class="commit-specimen">
+              <div class="commit-syntax"><span class="commit-type">feat</span><span>(payment):</span><span class="commit-ticket">PAY-142</span><span>validate card details</span></div>
+              <div class="commit-legend"><span><i class="type-dot"></i>ประเภท</span><span><i class="scope-dot"></i>ขอบเขต</span><span><i class="ticket-dot"></i>Jira key</span><span><i class="summary-dot"></i>ผลของการเปลี่ยน</span></div>
+            </div>
+            <div class="command-pair jira-commit-examples">
+              <div class="code-block"><code>feat(payment): PAY-142 add card form</code><p class="code-note">เพิ่ม behavior ใหม่</p></div>
+              <div class="code-block"><code>test(payment): PAY-142 cover declined card</code><p class="code-note">เพิ่ม test ของ ticket เดิม</p></div>
+              <div class="code-block"><code>fix(payment): PAY-142 handle gateway timeout</code><p class="code-note">แก้ bug ที่พบระหว่างทำงาน</p></div>
+              <div class="code-block"><code>docs(payment): PAY-142 document retry policy</code><p class="code-note">อัปเดตเอกสารที่เกี่ยวข้อง</p></div>
+            </div>
+
+            <h3 class="subheading">4. Pull Request ต้องตอบว่า “พร้อมส่งหรือยัง”</h3>
+            <div class="jira-pr-card">
+              <div class="jira-pr-top"><span class="jira-pr-state">READY FOR REVIEW</span><strong>PAY-142: Add card payment</strong></div>
+              <div class="jira-pr-body">
+                <div><span>JIRA</span><p><code>PAY-142</code> — Add card payment</p></div>
+                <div><span>SUMMARY</span><p>เพิ่ม card form, validation และ gateway error handling</p></div>
+                <div><span>ACCEPTANCE</span><p>✓ valid card &nbsp; ✓ declined card &nbsp; ✓ timeout state</p></div>
+                <div><span>TEST</span><p><code>npm test -- payment</code> — passed</p></div>
+                <div><span>RISK / ROLLBACK</span><p>เปิดผ่าน feature flag; ปิด flag เพื่อ rollback</p></div>
+              </div>
+            </div>
+            <aside class="callout callout-orange"><span class="callout-icon" aria-hidden="true">!</span><p><strong>ถ้าใช้ squash merge</strong><br />ตั้ง squash commit ให้มี <code>PAY-142</code> อยู่ด้วย วิธีง่ายที่สุดคือใส่ key ไว้ใน PR title ตั้งแต่แรก</p></aside>
+
+            <h3 class="subheading">5. Map Jira status กับเหตุการณ์จริง</h3>
+            <div class="jira-status-flow" role="list" aria-label="ตัวอย่างการเปลี่ยนสถานะ Jira ตาม Git workflow">
+              <div role="listitem"><span class="status-dot ready"></span><strong>READY</strong><p>Acceptance criteria ชัดและเริ่มงานได้</p><code>ยังไม่มี branch</code></div>
+              <div role="listitem"><span class="status-dot progress"></span><strong>IN PROGRESS</strong><p>สร้าง branch และมี owner แล้ว</p><code>first push</code></div>
+              <div role="listitem"><span class="status-dot review"></span><strong>IN REVIEW</strong><p>PR พร้อม review และ CI ผ่าน</p><code>PR ready</code></div>
+              <div role="listitem"><span class="status-dot qa"></span><strong>QA</strong><p>รวมเข้า test environment แล้ว</p><code>deployed to QA</code></div>
+              <div role="listitem"><span class="status-dot done"></span><strong>DONE</strong><p>ผ่าน Definition of Done ของทีม</p><code>released</code></div>
+            </div>
+            <p class="table-footnote">ชื่อ status ปรับให้ตรง workflow ของทีม และอย่าถือว่า “merge แล้ว = Done” หากยังต้อง QA หรือ deploy</p>
+
+            <h3 class="subheading">6. Smart Commits — ใช้เมื่อทีมเปิดรองรับ</h3>
+            <p class="section-copy">Smart Commits สามารถ comment, log time หรือสั่ง transition Jira จาก commit message ได้ แต่เป็นความสามารถเสริมและต้องตั้งค่า integration, permission และอีเมลผู้ commit ให้ตรงกับบัญชี Jira</p>
+            <div class="smart-commit-grid">
+              <div><span>COMMENT</span><code>PAY-142 #comment validation passed</code></div>
+              <div><span>LOG TIME</span><code>PAY-142 #time 2h 30m card validation</code></div>
+              <div><span>TRANSITION</span><code>PAY-142 #start-review</code></div>
+              <div><span>MULTIPLE</span><code>PAY-142 #time 2h #comment tests passed #resolve</code></div>
+            </div>
+            <aside class="callout callout-red"><span class="callout-icon" aria-hidden="true">×</span><p><strong>Smart Commit ต้องอยู่ในบรรทัดเดียว</strong><br />ชื่อ transition ต้องตรงกับ Jira workflow และ transition ที่มี required fields เพิ่มเติมอาจทำงานไม่สำเร็จ ควรทดสอบกับ project จริงก่อนนำมาเป็นมาตรฐานทีม</p></aside>
+
+            <h3 class="subheading">7. Jira style สำหรับหลาย Agent</h3>
+            <div class="jira-agent-map">
+              <div class="jira-parent"><span>PARENT STORY</span><strong>PAY-142</strong><p>Add card payment</p></div>
+              <div class="jira-subtasks" role="list" aria-label="ตัวอย่าง Jira subtask ต่อ Agent">
+                <div role="listitem"><code>PAY-143</code><span>Auth Agent</span><p><code>feature/PAY-143-payment-token</code></p></div>
+                <div role="listitem"><code>PAY-144</code><span>UI Agent</span><p><code>feature/PAY-144-card-form</code></p></div>
+                <div role="listitem"><code>PAY-145</code><span>Test Agent</span><p><code>test/PAY-145-payment-e2e</code></p></div>
+              </div>
+            </div>
+            <p class="section-copy jira-agent-note">Coordinator ดู parent story ส่วน Agent แต่ละตัวรับ subtask key ของตัวเอง ทำให้ branch, commits, PR และสถานะแยกตรวจสอบได้ชัดเจน ก่อน Integrator รวมทุกชิ้นตาม acceptance criteria ของ <code>PAY-142</code></p>
+
+            <div class="jira-reference-links">
+              <a href="https://support.atlassian.com/jira-software-cloud/docs/reference-issues-in-your-development-work/" target="_blank" rel="noreferrer"><span>ATLASSIAN DOCS</span><strong>Reference work items in development work ↗</strong></a>
+              <a href="https://support.atlassian.com/bitbucket-cloud/docs/use-smart-commits/" target="_blank" rel="noreferrer"><span>ATLASSIAN DOCS</span><strong>Use Smart Commits ↗</strong></a>
+            </div>
+
+            <a class="playbook-link jira-playbook-link" href="JIRA_GIT_WORKFLOW.md">
+              <span><small>COMPANION FILE</small><strong>เปิด Jira Git Workflow Playbook</strong></span>
+              <span aria-hidden="true">↗</span>
+            </a>
+          </section>
+
+          <section class="guide-section" id="cheatsheet" aria-labelledby="cheatsheet-title">
+            <div class="section-marker"><span>10</span><i></i></div>
             <p class="section-kicker">KEEP THIS NEARBY</p>
             <h2 id="cheatsheet-title">Cheat sheet<br /><span>คำสั่งที่ใช้บ่อยในหน้าเดียว</span></h2>
             <p>ไม่จำเป็นต้องจำทั้งหมด เริ่มจาก 8 คำสั่งที่อยู่ในวงจรประจำวัน แล้วค่อยเติมคำสั่งอื่นตามสถานการณ์</p>

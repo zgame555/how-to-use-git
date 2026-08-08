@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 360" role="img" aria-labelledby="title desc">
+  <title id="title">Git and Jira traceability flow</title>
+  <desc id="desc">Jira work item PAY-142 flows through a feature branch, commits, pull request, and deployment before reporting status back to Jira.</desc>
+  <defs>
+    <marker id="jira-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#2c6386"/></marker>
+    <marker id="return-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#ef5b35"/></marker>
+  </defs>
+  <rect width="900" height="360" fill="#f7f9fb"/>
+  <path d="M0 44H900" stroke="#d8e2e7"/>
+  <text x="28" y="29" fill="#647277" font-family="monospace" font-size="11" letter-spacing="2">FIG. 04 / TICKET TO TRACEABLE DELIVERY</text>
+
+  <g font-family="Arial, sans-serif">
+    <rect x="32" y="88" width="172" height="164" rx="5" fill="#2c6386"/>
+    <text x="52" y="116" fill="#cce1ea" font-size="10" font-weight="700" letter-spacing="1.4">JIRA WORK ITEM</text>
+    <text x="52" y="157" fill="#ffffff" font-size="28" font-weight="700">PAY-142</text>
+    <text x="52" y="183" fill="#e5f0f3" font-size="13" font-weight="700">Add card payment</text>
+    <rect x="52" y="207" width="92" height="24" rx="12" fill="#f3bd72"/>
+    <text x="98" y="223" text-anchor="middle" fill="#12242c" font-family="monospace" font-size="10" font-weight="700">IN PROGRESS</text>
+
+    <path d="M205 170H247" stroke="#2c6386" stroke-width="2" marker-end="url(#jira-arrow)"/>
+    <path d="M378 170H420" stroke="#2c6386" stroke-width="2" marker-end="url(#jira-arrow)"/>
+    <path d="M551 170H593" stroke="#2c6386" stroke-width="2" marker-end="url(#jira-arrow)"/>
+    <path d="M724 170H766" stroke="#2c6386" stroke-width="2" marker-end="url(#jira-arrow)"/>
+
+    <g>
+      <rect x="252" y="112" width="126" height="116" rx="4" fill="#fffdf8" stroke="#2c6386" stroke-width="2"/>
+      <circle cx="273" cy="135" r="7" fill="#83c4ca"/>
+      <text x="289" y="139" fill="#2c6386" font-size="10" font-weight="700" letter-spacing="1">BRANCH</text>
+      <text x="269" y="171" fill="#12242c" font-family="monospace" font-size="10" font-weight="700">feature/</text>
+      <text x="269" y="189" fill="#c74124" font-family="monospace" font-size="11" font-weight="700">PAY-142</text>
+      <text x="269" y="207" fill="#647277" font-family="monospace" font-size="9">-card-payment</text>
+    </g>
+
+    <g>
+      <rect x="425" y="112" width="126" height="116" rx="4" fill="#fffdf8" stroke="#2c6386" stroke-width="2"/>
+      <circle cx="446" cy="135" r="7" fill="#8bcd9e"/>
+      <text x="462" y="139" fill="#2c6386" font-size="10" font-weight="700" letter-spacing="1">COMMITS</text>
+      <text x="442" y="170" fill="#2e795d" font-family="monospace" font-size="10" font-weight="700">feat:</text>
+      <text x="442" y="188" fill="#c74124" font-family="monospace" font-size="11" font-weight="700">PAY-142</text>
+      <text x="442" y="207" fill="#647277" font-family="monospace" font-size="9">validate card</text>
+    </g>
+
+    <g>
+      <rect x="598" y="112" width="126" height="116" rx="4" fill="#fffdf8" stroke="#2c6386" stroke-width="2"/>
+      <circle cx="619" cy="135" r="7" fill="#f3bd72"/>
+      <text x="635" y="139" fill="#2c6386" font-size="10" font-weight="700" letter-spacing="1">PULL REQUEST</text>
+      <text x="615" y="171" fill="#c74124" font-family="monospace" font-size="11" font-weight="700">PAY-142:</text>
+      <text x="615" y="190" fill="#12242c" font-size="10" font-weight="700">Add card</text>
+      <text x="615" y="207" fill="#647277" font-size="9">CI ✓ · review ✓</text>
+    </g>
+
+    <g>
+      <rect x="771" y="112" width="97" height="116" rx="4" fill="#d4e8dc" stroke="#2e795d" stroke-width="2"/>
+      <circle cx="819" cy="149" r="17" fill="#2e795d"/>
+      <path d="M811 149l6 6 11-13" fill="none" stroke="#fff" stroke-width="3"/>
+      <text x="819" y="186" text-anchor="middle" fill="#2e795d" font-size="10" font-weight="700" letter-spacing="1">RELEASED</text>
+      <text x="819" y="206" text-anchor="middle" fill="#4d7467" font-family="monospace" font-size="9">status: DONE</text>
+    </g>
+
+    <path d="M819 235V294H118V259" fill="none" stroke="#ef5b35" stroke-width="2" stroke-dasharray="6 6" marker-end="url(#return-arrow)"/>
+    <text x="466" y="318" text-anchor="middle" fill="#ef5b35" font-size="11" font-weight="700">BRANCH · COMMITS · PR · BUILD · DEPLOYMENT → JIRA DEVELOPMENT PANEL</text>
+    <text x="466" y="339" text-anchor="middle" fill="#647277" font-size="10">One uppercase work item key connects the complete delivery trail.</text>
+  </g>
+</svg>
