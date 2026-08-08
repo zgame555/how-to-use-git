@@ -25,3 +25,4 @@ python3 -m http.server 8000
 - Companion guide: [JIRA_GIT_WORKFLOW.md](./JIRA_GIT_WORKFLOW.md)
 - บท Git Teamwork ครอบคลุม team contract, PR/review, merge strategy และ hotfix
 - Companion guide: [TEAM_GIT_WORKFLOW.md](./TEAM_GIT_WORKFLOW.md)
+- ใช้งาน repository นี้เป็น Codex skill ได้ผ่าน [SKILL.md](./SKILL.md) พร้อม metadata ใน [`agents/openai.yaml`](./agents/openai.yaml)

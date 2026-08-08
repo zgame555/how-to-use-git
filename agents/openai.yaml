@@ -1,0 +1,4 @@
+interface:
+  display_name: "How to Use Git"
+  short_description: "Safe Git workflows for teams, Jira, and agents"
+  default_prompt: "Use $how-to-use-git to plan and execute a safe Git workflow for this repository."
